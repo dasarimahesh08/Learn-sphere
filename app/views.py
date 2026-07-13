@@ -96,11 +96,14 @@ def insert_trainer(request):
         
             if TTO[1]:
                 showmsg['success'] = "Registarion is successfully completed"
-
-                send_mail("Registration" , f''' hey {name} , your registration is successfully completed 
-                Thanks for choosing our website ''' ,
-                'maheshdasarimahesh30@gmail.com' , 
-                 [mail] , fail_silently = False)
+                try:
+                    send_mail("Registration" , f''' hey {name} , your registration is successfully completed 
+                    Thanks for choosing our website ''' ,
+                    'maheshdasarimahesh30@gmail.com' , 
+                    [mail] , fail_silently = False)
+                except Exception as e:
+                    print("MAIL ERROR : " , repr(e))
+                    
                 return HttpResponseRedirect(reverse('homepage'))
             else:
                 showmsg['unsuccess'] = "Already registerd"
