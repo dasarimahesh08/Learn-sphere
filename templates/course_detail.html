@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ course.cname }}</title>
+</head>
+<body>
+    <div class="">
+        <div class="">
+            
+            {% if course.cname == 'python' %}
+                {% include 'courses/python.html' %}
+
+            {% elif course.cname == 'selenium' %}
+                {% include 'courses/selenium.html' %}
+
+            {% elif course.cname == 'django' %}
+                {% include 'courses/django.html' %}
+
+            {% elif course.cname == 'web technology' %}
+                {% include 'courses/webtechnology.html' %}
+
+            {% elif course.cname == 'SQL' %}
+                {% include 'courses/sql.html' %}
+
+            {% elif course.cname == 'java' %}
+                {% include 'courses/java.html' %}
+
+            {% elif course.cname == 'Manual Testing' %}
+                {% include 'courses/manualtesting.html' %}
+
+            {% elif course.cname == 'API testing' %}
+                {% include 'courses/apitesting.html' %}
+
+            {% elif course.cname == 'data science' %}
+                {% include 'courses/datascience.html' %}
+
+            {% elif course.cname == 'AIML' %}
+                {% include 'courses/aiml.html' %}
+
+            {% elif course.cname == 'data analytics' %}
+                {% include 'courses/dataanalytics.html' %}
+                
+            {% elif course.cname == 'Devops' %}
+                {% include 'courses/devops.html' %}
+
+            {% endif %}
+        </div>
+    </div>
+</body>
+</html>

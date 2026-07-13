@@ -1,0 +1,192 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>API Testing</title>
+    <link rel="stylesheet" href="{% static 'css/bootstrap.css' %}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css" 
+    integrity="sha512-2SwdPD6INVrV/lHTZbO2nodKhrnDdJK9/kg2XD1r9uGqPo1cUbujc+IYdlYdEErWNu69gVcYgdxlmVmzTWnetw==" 
+    crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <style>
+        body{
+            background: linear-gradient(135deg , #3a0ca3 , #7209b7 , #4361ee);
+        }
+        .img1{
+            height: 550px;
+        }
+        .firstimgparent{
+            position: relative;
+        }
+        .firstimgtext{
+            position: absolute;
+            top: 100px;
+            left: 90px;
+        }
+        .heading{
+            font-size: 55px;
+        }
+        hr{
+            border: none;
+            height: 2px;
+            background: white;
+        }
+        .img2{
+            border-radius: 20px;
+        }
+        .img2text{
+            margin-top: 30px;
+            margin-left: 70px;
+        }
+        .img2heading{
+            font-size: 45px;
+        }
+        .img3{
+            height: 550px;
+            border-radius: 20px;
+        }
+        .block3{
+            position: relative;
+        }
+        .img3text{
+            position: absolute;
+            top: 10px;
+            left: 850px;
+        }
+        .block3heading{
+            font-size: 45px;
+        }
+        .spantxt{
+            font-size: 22px;
+            color: rgb(169, 166, 166);
+        }
+         #enroll-popup{
+        background-color: aliceblue;
+        box-shadow: 0px 0px 4px grey;
+        width: 35%;
+        position: fixed;
+        top: 35%;
+        left: 30%;
+
+      }
+     
+    </style>
+</head>
+<body>
+    <div class="firstimgparent">
+        <img src="{% static 'images/api1.png' %}" class="img1 w-100">
+        <div class="firstimgtext text-white">
+            <h1 class="heading">API Testing</h1>
+            <p class="fs-4">Validating and verifying application <br>
+                programming interface to ensure <br>
+                functionality,reliability and security
+            </p>
+        </div>
+    </div>
+    <hr>
+    <div class="secondblock d-flex mt-5">
+        <div class="w-50 img2text text-white">
+            <h1 class="img2heading">What is <span class="text-primary">API Testing?</span></h1>
+            <p class="fs-4">API Testing is the process of testing and validating and verifying an <br>
+                Application Programming Interface(API) to ensure it <br>
+                moeis expectations for functionality,security, <br> performance and reliability
+            </p>
+            <h5 class=""><i class="fa-solid fa-check text-success"></i>Ensuring APIswork as intended and interact correctly with other software</h5>
+            <h5><i class="fa-solid fa-check text-success"></i>Validating data output , response time , security , and error handling</h5>
+            <h5><i class="fa-solid fa-check text-success"></i>Simulating differnt scenarios to find bugs and defects early</h5>
+        </div>
+        <div class="w-50">
+            <img src="{% static 'images/api2.png' %}" class="img2 ms-5">
+        </div>
+    </div>
+    <hr>
+    <div class="d-flex block3">
+        <div class="d-block w-50">
+            <img src="{% static 'images/api3.png' %}" class="img3 ms-4 w-100">
+        </div>
+        <div class="d-block w-50 text-white img3text">
+            <h1 class=" block3heading">Key points of <span class="text-primary">API Testing</span></h1>
+            <h3 class="">Reliability : <span class="spantxt">Discover issues early for improved functionality.</span></h3>
+            <h3 class="">Security : <span class="spantxt">Identify vulnerabilities and potential risks.</span></h3>
+            <h3 class="">Functionality : <span class="spantxt">Ensure APIs return the correct responses.</span></h3>
+            <h3 class="">Performance : <span class="spantxt">Help optimize API speed , efficency, and <br>dependability</span></h2>
+            <h1 class="mt-2">Course Details </h1>
+            <h3 class="">Course Name : {{ course.cname }}</h3>
+            <h3>Available Trainers : 
+                {% for tr in qslto %}
+                {{ tr.tname }}
+                {% endfor %}
+            </h3>
+            <h3>Duration : {{ course.duration }}</h3>
+            <h3>Price : &#8377; {{ course.price }}</h3>
+            {% if request.session.sid %}
+                <button class="btn btn-primary mb-3 fs-5" id="enrollBtn">
+                <i class="fa-regular fa-circle-user me-2"></i>Enroll now
+                </button>
+            {% else %}
+                
+            {% endif %}
+        </div>
+    </div>
+
+    <div id="enroll-popup" class="rounded-2">
+        <div class="ms-4 mt-4">
+            <h5 class="">Are you sure want to purchase the
+                <span class="text-warning fs-3">{{ course.cname }}</span> course.??
+            </h5>
+            <center>
+                <h4 class="text-center mt-3">Duration : {{ course.duration }}</h4>
+                <h4 class="text-center mt-3">price : <i class="bi bi-currency-rupee"></i>{{ course.price }}</h4>
+                <form method="POST" action="{% url 'payment' course.cid %}" id="form">
+                    {% csrf_token %}
+                    <select name="tnr" id="tnr" class="rounded ps-2 pe-2 pt-1 mt-3 pb-1">
+                        <option value="">Choose your trainer</option>
+                        {% for to in qslto %}
+                            <option value="{{ to.tid }}">{{ to.tname }}</option>
+                        {% endfor %}
+                    </select>
+                    <p class="text-danger" id="droperror"></p>
+            </center>
+            <button type="button" class="btn btn-danger ms-5 mt-3 mb-3 fs-5" id="cancelBtn">cancel</button>
+            <button type="submit" class="btn btn-success ms-5 mt-3 mb-3 fs-5" id="confirmBtn">Proceed to payment</button>
+                {% for msg in messages %}
+                    <p class="fs-5 alert alert-success">{{ msg }}</p>
+                {% endfor %}
+            </form>
+        </div>
+   </div>
+
+   <script>
+        // popup designing
+        let enrollBtn = document.getElementById("enrollBtn");
+        let enrollPopup = document.getElementById("enroll-popup");
+        let cancelBtn = document.getElementById("cancelBtn");
+
+        enrollPopup.style.display = "none";
+
+        enrollBtn.addEventListener("click" , function(){
+            enrollPopup.style.display = "block";
+
+            cancelBtn.addEventListener("click" , function(){
+                enrollPopup.style.display = "none";
+            });
+        });
+
+        // validation for dropdown
+        let tnrdropdown = document.getElementById("tnr");
+        let confirmBtn = document.getElementById("confirmBtn");
+        let droperror = document.getElementById("droperror");
+        let form = document.getElementById("form");
+        
+        form.addEventListener("submit" , function(e){
+            enrollPopup.style.display = "block"
+            if (tnrdropdown.value === ""){
+                droperror.innerText = "Please select the trainer"
+                e.preventDefault()
+            }
+        });
+
+   </script>
+</body>
+</html>

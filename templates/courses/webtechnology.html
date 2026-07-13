@@ -1,0 +1,156 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Web Technology</title>
+    <link rel="stylesheet" href="{% static 'css/bootstrap.css' %}">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css" 
+    integrity="sha512-2SwdPD6INVrV/lHTZbO2nodKhrnDdJK9/kg2XD1r9uGqPo1cUbujc+IYdlYdEErWNu69gVcYgdxlmVmzTWnetw=="
+     crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <style>
+        .parentdiv{
+            background:linear-gradient(rgba(0,0,0,0.8) ,rgba(0,0,0,0.8)), url("{% static 'images/webtechcover.png' %}");
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            width: 100%;
+        }
+        .detailsdiv{
+            opacity: 0.7;
+        }
+        .imgsdiv{
+            border-radius: 4px;
+            margin: 10px 10px 0px 30px ;
+            width:90%;
+            gap: 120px;
+            opacity: 0.9;
+        }
+        .enroll-btn{
+            margin-left: 250px;
+            margin-right: 250px;
+        }
+         #enroll-popup{
+        background-color: aliceblue;
+        box-shadow: 0px 0px 4px grey;
+        width: 35%;
+        position: fixed;
+        top: 35%;
+        left: 30%;
+
+      }
+     
+    </style>
+</head>
+<body>
+    <div class="parentdiv">
+        <div class="d-flex justify-content-center  ">
+            <div class="d-block card w-50 bg-warning text-center mt-3 detailsdiv">
+                <h2>Course Name : {{ course.cname }}</h2>
+                <h2>Available Trainers : 
+                    {% for tnr in qslto %}
+                        {{ tnr.tname }}
+                    {% endfor %}
+                </h2>
+                <h2>Durtions : {{ course.duration }}</h2>
+                <h3>Price : &#8377; {{ course.price }}</h3>
+                {% if request.session.sid %}
+                    <button class="btn btn-dark mb-3 fs-5 enroll-btn" id="enrollBtn">
+                        <i class="fa-regular fa-circle-user me-2"></i>Enroll now
+                    </button>
+                {% else %}
+                    
+                {% endif %}
+            </div>
+        </div>
+        <div class="d-flex p-5">
+            <ul class="text-white fs-3">
+                <li class="mb-2">HTML (HyperText Markup Language) is used to structure web pages and define content like text, images, and links.</li>
+                <li class="mb-2">CSS (Cascading Style Sheets) is used to style and design web pages, including layout, colors, and fonts.</li>
+                <li class="mb-2">JavaScript adds interactivity and dynamic behavior to web pages.</li>
+                <li class="mb-2">HTML forms are used to collect user input such as login details and feedback.</li>
+                <li class="mb-2">CSS enables responsive design, making websites adaptable to different screen sizes (mobile, tablet, desktop).</li>
+            </ul>
+            <ul class="text-white fs-3 ms-3">
+                <li class="mb-2">JavaScript can manipulate HTML and CSS dynamically using the DOM (Document Object Model).</li>
+                <li class="mb-2">Modern CSS frameworks like Bootstrap help create responsive layouts quickly.</li>
+                <li class="mb-2">JavaScript supports event handling, allowing actions like clicks, hover effects, and form validation.</li>
+                <li class="mb-2">Together, HTML, CSS, and JavaScript form the foundation of all modern web applications.</li>
+                <li class="mb-2">These technologies are essential for building interactive, user-friendly, and visually appealing websites.</li>
+            </ul>
+        </div>
+        <div class="d-flex justify-content-center">
+            <h2 class="btn btn-warning p-3 fs-5">You can Create this type of Web Pages</h2>
+        </div>
+         <div class="d-block text-center">
+                <button class="border rounded"><i class="fa-solid fa-arrow-down"></i></button>
+        </div>
+        <div class="d-flex justify-content-center  border rounded imgsdiv">
+            <img src="{% static 'images/webtech1.png' %}" class="w-25 border rounded">
+            <img src="{% static 'images/webtech2.png' %}" class="w-25 border rounded">
+            <img src="{% static 'images/webtech3.png' %}" class="w-25 border rounded">
+        </div>
+    </div>
+    <div id="enroll-popup" class="rounded-2">
+        <div class="ms-4 mt-4">
+            <h5 class="">Are you sure want to purchase the
+                <span class="text-warning fs-3">{{ course.cname }}</span> course.??
+            </h5>
+            <center>
+                <h4 class="text-center mt-3">Duration : {{ course.duration }}</h4>
+                <h4 class="text-center mt-3">price : <i class="bi bi-currency-rupee"></i>{{ course.price }}</h4>
+                <form method="POST" action="{% url 'payment' course.cid %}" id="form">
+                    {% csrf_token %}
+                    <select name="tnr" id="tnr" class="rounded ps-2 pe-2 pt-1 mt-3 pb-1">
+                        <option value="">Choose your trainer</option>
+                        {% for to in qslto %}
+                            <option value="{{ to.tid }}">{{ to.tname }}</option>
+                        {% endfor %}
+                    </select>
+                    <p class="text-danger" id="droperror"></p>
+            </center>
+            <button type="button" class="btn btn-danger ms-5 mt-3 mb-3 fs-5" id="cancelBtn">cancel</button>
+            <button type="submit" class="btn btn-success ms-5 mt-3 mb-3 fs-5" id="confirmBtn">Proceed to payment</button>
+                {% for msg in messages %}
+                    <p class="fs-5 alert alert-success">{{ msg }}</p>
+                {% endfor %}
+            </form>
+        </div>
+   </div>
+
+
+   <script>
+        // popup designing
+        let enrollBtn = document.getElementById("enrollBtn");
+        let enrollPopup = document.getElementById("enroll-popup");
+        let cancelBtn = document.getElementById("cancelBtn");
+
+        enrollPopup.style.display = "none";
+
+        enrollBtn.addEventListener("click" , function(){
+            enrollPopup.style.display = "block";
+
+            cancelBtn.addEventListener("click" , function(){
+                enrollPopup.style.display = "none";
+            });
+        });
+
+        // validation for dropdown
+        let tnrdropdown = document.getElementById("tnr");
+        let confirmBtn = document.getElementById("confirmBtn");
+        let droperror = document.getElementById("droperror");
+        let form = document.getElementById("form");
+        
+        form.addEventListener("submit" , function(e){
+            enrollPopup.style.display = "block"
+            if (tnrdropdown.value === ""){
+                droperror.innerText = "Please select the trainer"
+                e.preventDefault()
+            }
+        });
+
+   </script>
+</body>
+</html>

@@ -1,0 +1,66 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Enroll course</title>
+
+    <link rel="stylesheet" href="{% static 'css/bootstrap.css' %}?v=1">
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
+
+    <style>
+        .main-block{
+            background-color: #eef5ff;
+        }
+        .card{
+            border: none;
+            box-shadow: 0px 0px 4px grey;
+        }
+        .card-img-top{
+            height: 170px;
+        }
+        .card-text-body{
+            height: 150px;
+        }
+    </style>
+
+</head>
+<body>
+    <div class="mt-2 rounded-3 ms-2 me-1 main-block">
+        <div class="d-flex border ms-2 me-2 rounded-2 mb-3">
+            <h1 class="ms-4 mt-3">
+                <a href="{% url 'student_dashboard' %}" class="border text-dark rounded-2 ps-3 pe-3">
+                    <i class="bi bi-arrow-left"></i>
+                </a>
+            </h1>
+            <div class="">
+                <h1 class="ms-4">Enroll Courses</h1>
+                <p class="ms-4 fs-5">Explore our wide range of courses and enroll in one <br>
+                    that helps you achieve your goals.</p>
+            </div>
+        </div>
+        
+        <div class="container-fluid ">
+            <div class="row g-1 ms-5">
+                {% for c in co %}
+                <div class="col-3 mb-5">
+                    <div class="card rounded-3" style="width: 18rem;">
+                        <img src="{{ c.cimage.url }}" class="card-img-top rounded-top" alt="...">
+                        <div class="card-body">
+                            <div class="card-text-body">
+                                <h5 class="{{ c.cid }}">{{ c.cname }}</h5>
+                                <p class="card-text">{{ c.description }}</p>
+                                <h5 class="text-primary ms-2"><i class="bi bi-currency-rupee"></i>{{ c.price }}</h5>
+                            </div>
+                            <a href="{% url 'course_detail' c.cid %}" class="btn btn-primary fs-5 ps-5 pe-5 ms-4">Enroll Now</a>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</body>
+</html>

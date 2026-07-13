@@ -1,0 +1,111 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>change password</title>
+
+    <link rel="stylesheet" href="{% static 'css/bootstrap.css' %}">
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
+    <style>
+        .cpw-div{
+        width: 90%;
+        height: 100%;
+        background-color: rgb(205, 251, 236);
+       }
+       .lock-icon{
+        height: 70px;
+        width: 70px;
+        font-size: 40px;
+        background-color: rgb(44, 44, 252);
+        border-radius: 50%;
+        padding-left: 15px;
+       }
+       .invalid{
+        color: red;
+        
+       }
+       .invalid:before{
+        position: relative;
+        left: -30px;
+        content: '×';
+       }
+       .valid{
+        color: green;
+        
+       }
+       .valid::before{
+        position: relative;
+        left: -30px;
+        content: '✓';
+       }
+       .strength-boxes{
+        height: 10px;
+        width: 50px;
+        border: 2px solid grey;
+        border-radius: 30px;
+        margin-left: 10px;
+       }
+    </style>
+</head>
+<body>
+    <div class="cpw-div ms-5 mt-5">
+        <div class="d-flex">
+            <a href="{% url 'trainer_dashboard' %}" class="text-dark">
+                <h1 class="ms-4 mt-4"><i class="bi bi-arrow-left"></i></h1>
+            </a>
+           <h1 class="lock-icon mt-3 ms-5 pt-2"><i class="bi bi-lock-fill text-white"></i></h1>
+            <div class="mt-4 ms-4">
+                <h3 class="">Change Password</h3>
+                <h6 class="">Update your password to keep your account secure</h6>
+            </div>
+        </div>
+        <div class="">
+            <form method="POST" id="update-form">
+                {% csrf_token %}
+                <label for="ctpw" class="fs-5 ms-5 mt-4">Current Password</label>
+                <input type="password" name="ctpw" id="ctpw" placeholder="Enter Current password" class="form-control w-75 ms-4 mt-1">
+                <p class="text-danger ms-5 mt-2" id="current-pw-error"></p>
+                
+                <label for="npw" class="fs-5 ms-5 mt-4">New Password</label>
+                <input type="password" name="npw" id="npw" placeholder="Enter New password" class="form-control w-75 ms-4 mt-1">
+                <p class="text-danger ms-5 mt-2" id="new-pw-error"></p>
+
+
+                <div class="" id="checking-block">
+                    
+                    <div class="d-flex ">
+                        <p class="ms-5 mt-3">password strength :
+                        <p class="strength-boxes mt-4" id="strength-box-1"></p>
+                        <p class="strength-boxes mt-4" id="strength-box-2"></p>
+                        <p class="strength-boxes mt-4" id="strength-box-3"></p>
+                    </div>
+                    </p>
+                    <p class="ms-5 mt-2 invalid" id="characters">Atleast 8 characters</p>
+                    <p class="ms-5 mt-2 invalid" id="lowercase">One lower case(a-z)</p>
+                    <p class="ms-5 mt-2 invalid" id="uppercase">One upper case(A-Z)</p>
+                    <p class="ms-5 mt-2 invalid" id="numbers">contain one number(0-9)</p>
+                    <p class="ms-5 mt-2 invalid" id="spe-char">Atlease one special character</p>
+                </div>
+
+                <label for="cmpw" class="fs-5 ms-5 mt-4">Confirm Password</label>
+                <input type="password" name="cmpw" id="cmpw" placeholder="Confirm Password" class="form-control w-75 ms-4 mt-1">
+                <p class="text-danger ms-5" id="cmpw-error"></p>
+
+                <button class="btn btn-primary mt-4 ms-5 fs-5" id="update-btn">
+                    <i class="bi bi-lock-fill fs-4 text-white me-2"></i>Update Password
+                </button>
+                <button class="btn btn-primary ms-5 mt-4 fs-5">
+                    <a href="{% url 'trainer_dashboard' %}" class="text-white text-decoration-none">Cancel</a>
+                </button>
+                <p class="ms-5 mt-2 mb-4">{{ dismsg.updated }}</p>
+                <p class="ms-5">{{ dismsg.notupdated }}</p>
+            </form>
+        </div>
+     </div>
+
+     <script src="{% static 'js/trainer_change_pw.js' %}"></script>
+</body>
+</html>

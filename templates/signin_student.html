@@ -1,0 +1,55 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign in Student</title>
+    <link rel="stylesheet" href="{% static 'css/bootstrap.css' %}">
+</head>
+<body>
+    <h1 class="bg-primary p-2">student login page</h1>
+    <center>
+        <form method="POST" class="form-control w-25">
+            {% csrf_token %}
+            <div class="">
+                <label for="email" class="fs-5">Enter Email : </label>
+                <input type="email" name="email" id="email" placeholder="Enter Email " class="form-control w-75 mt-2">
+                
+                <p class="text-danger" id="emailerror">{{ error.emailmatch }}</p>
+
+                <label for="pw" class="fs-5">Enter password : </label>
+                <input type="password" name="pw" id="pw" placeholder="Enter Password" class="form-control w-75 mt-2">
+                
+                <p class="text-danger" id="pwerror">{{ error.pwmatch }}</p>
+
+                <a href="{% url 'otp_sent' %}" class="text-decoration-none fs-5">forgot password..?</a>
+            </div>
+
+            <input type="submit" class="btn btn-primary mt-3" id="subBtn">
+        </form>
+    </center>
+
+    <script>
+        let email = document.getElementById("email");
+        let password = document.getElementById("pw");
+        let emailerror = document.getElementById("emailerror");
+        let pwerror = document.getElementById("pwerror");
+        let submit = document.getElementById("subBtn");
+
+        submit.addEventListener("click" , function(e){
+            if (email.value === ""){
+                emailerror.innerText = "Please enter email id"
+                e.preventDefault()
+            } else if(email.value.endswith("@gmail.com")){
+                emailerror.innerText = "Please enter valid email id"
+                e.preventDefault()
+            }
+            if (password.value === ""){
+                pwerror.innerText = "Please enter the password"
+                e.preventDefault()
+            }
+        });
+    </script>
+</body>
+</html>

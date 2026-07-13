@@ -1,0 +1,167 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Django</title>
+    <link rel="stylesheet" href="{% static 'css/bootstrap.css' %}">
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
+    <style>
+        .parentdiv{
+            background:linear-gradient(rgba(0,0,0,0.9) ,rgba(0,0,0,0.9)), url("{% static 'images/jango3.png' %}");
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            width: 100%;
+            
+        }
+        .detailsdiv{
+            background-color: aqua;
+            opacity: 0.8;
+        }
+        .img2div{
+            margin-left: 60px;
+            opacity: 0.7;
+        }
+        .img1div{
+            opacity: 0.7;
+        }
+        .img1{
+            border-radius: 4px;
+        }
+        .img2{
+            border-radius: 4px;
+        }
+        .enroll-btn{
+            margin-left: 250px;
+            margin-right: 250px;
+        }
+        #enroll-popup{
+        background-color: aliceblue;
+        box-shadow: 0px 0px 4px grey;
+        width: 35%;
+        position: fixed;
+        top: 35%;
+        left: 30%;
+
+      }
+     
+    </style>
+</head>
+<body>
+    <div class="parentdiv">
+        <div class="d-flex justify-content-center">
+            <div class="card w-50 detailsdiv text-center mt-2">
+                <h2>Course Name : {{ course.cname }}</h2>
+                <h2>Available Trainer : 
+                    {% for tn in qslto %}
+                        {{ tn.tname }}
+                    {% endfor %}
+                </h2>
+                <h2>Duration :{{ course.duration }}</h2>
+                <h3>Price : &#8377; {{ course.price }}</h3>
+                {% if request.session.sid %}
+                    <button class="btn btn-warning mb-3 fs-5 enroll-btn" id="enrollBtn">
+                        <i class="bi bi-person-circle me-2"></i>Enroll now
+                    </button>
+                {% else %}
+                    
+                {% endif %}
+            </div>
+        </div>
+
+        <div class="d-flex">
+            <div class="d-block w-50 ">
+                <ul class="fs-2 text-white ms-3 mt-3">
+                    <li class="mb-2">Django is a high-level Python web framework used to build web applications quickly.</li>
+                    <li class="mb-2">It comes with built-in features like authentication and admin panel.</li>
+                    <li class="mb-2">Django provides an ORM to interact with databases easily.</li>
+                    <li class="mb-2">It helps in creating secure and scalable web applications.</li>
+                </ul>
+            </div>
+            <div class="d-block mt-3  img2div">
+                <img src="{% static 'images/jango2.png' %}" class="w-100 mt-3 img1">
+            </div>   
+        </div>
+
+        <div class="d-flex">
+            <div class="d-block mt-2 w-50 img1div">
+                <img src="{% static 'images/jango1.png' %}" class="w-100 ms-3 h-75 img2">
+            </div>
+             <div class="d-block w-50">
+                <ul class="fs-2 text-white ms-5 mt-3">
+                    <li class="mb-2">Django handles URL routing and request-response efficiently.</li>
+                    <li class="mb-2">It allows integration with front-end technologies like HTML, CSS, and JavaScript.</li>
+                    <li class="mb-2">It supports building REST APIs using Django Rest Framework.</li>
+                    <li class="mb-2">Django is widely used for developing modern, data-driven websites.</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <div id="enroll-popup" class="rounded-2">
+        <div class="ms-4 mt-4">
+            <h5 class="">Are you sure want to purchase the
+                <span class="text-warning fs-3">{{ course.cname }}</span> course.??
+            </h5>
+            <center>
+                <h4 class="text-center mt-3">Duration : {{ course.duration }}</h4>
+                <h4 class="text-center mt-3">price : <i class="bi bi-currency-rupee"></i>{{ course.price }}</h4>
+                <form method="POST" action="{% url 'payment' course.cid %}" id="form">
+                    {% csrf_token %}
+                    <select name="tnr" id="tnr" class="rounded ps-2 pe-2 pt-1 mt-3 pb-1">
+                        <option value="">Choose your trainer</option>
+                        {% for to in qslto %}
+                            <option value="{{ to.tid }}">{{ to.tname }}</option>
+                        {% endfor %}
+                    </select>
+                    <p class="text-danger" id="droperror"></p>
+            </center>
+            <button type="button" class="btn btn-danger ms-5 mt-3 mb-3 fs-5" id="cancelBtn">cancel</button>
+            <button type="submit" class="btn btn-success ms-5 mt-3 mb-3 fs-5" id="confirmBtn">
+                proceed to payment
+            </button>
+                {% for msg in messages %}
+                    <p class="fs-5 alert alert-success">{{ msg }}</p>
+                {% endfor %}
+            </form>
+        </div>
+   </div>
+
+   <script>
+        // popup designing
+        let enrollBtn = document.getElementById("enrollBtn");
+        let enrollPopup = document.getElementById("enroll-popup");
+        let cancelBtn = document.getElementById("cancelBtn");
+
+        enrollPopup.style.display = "none";
+
+        enrollBtn.addEventListener("click" , function(){
+            enrollPopup.style.display = "block";
+
+            cancelBtn.addEventListener("click" , function(){
+                enrollPopup.style.display = "none";
+            });
+        });
+
+        // validation for dropdown
+        let tnrdropdown = document.getElementById("tnr");
+        let confirmBtn = document.getElementById("confirmBtn");
+        let droperror = document.getElementById("droperror");
+        let form = document.getElementById("confirmBtn");
+        
+        form.addEventListener("click" , function(e){
+            enrollPopup.style.display = "block"
+            if (tnrdropdown.value === ""){
+                droperror.innerText = "Please select the trainer"
+                e.preventDefault()
+            }
+           
+        });
+
+   </script>
+
+</body>
+</html>

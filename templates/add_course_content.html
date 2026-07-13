@@ -1,0 +1,135 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Content</title>
+
+    <link rel="stylesheet" href="{% static 'css/bootstrap.css' %}?v=1">
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
+  
+    <style>
+        .main-block{
+            background-color: aliceblue;
+        }
+        .content{
+            background-color: rgb(250, 250, 250);
+        }
+        .w-90{
+            width: 95%;
+        }
+        .viewcourse{
+            margin-left: 50%;
+            height: 50px;
+        }
+        #upload-popup{
+            background-color: rgb(186, 185, 185);
+            position: absolute;
+            top: 40%;
+            left: 40%;
+        }
+    </style>
+</head>
+<body>
+    <div class="main-block pt-4 pb-5 w-100">
+        <div class="ms-5 d-flex">
+            <a href="{% url 'trainer_dashboard' %}" class="text-dark border ps-3 pe-3 rounded-3">
+                <i class="bi bi-arrow-left fs-1"></i>
+            </a>
+            <h1 class="ms-4">Add Course Content</h1>
+            <a href="{% url 'display_course_content' %}" class="text-decoration-none btn btn-info text-white 
+            viewcourse pt-2 fs-5"> View content
+            </a>
+        </div>
+        <div class="mt-4 ms-4 me-4 border rounded-3 content">
+            <div class="w-90">
+                <form method="POST" id="form" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <label for="sc" class="fs-5 ms-5 mt-4">
+                        Select Course <span class="text-danger fs-3 ms-3">*</span>
+                    </label>
+                    <select name="sc" id="sc" class="form-control ms-4 me-5">
+                        <option value="" selected>Select course</option>
+                        {% for c in tco %}
+                            <option value="{{ c.cid }}">{{ c.cname }}</option>
+                        {% endfor %}
+                    </select>
+                    <p class="text-danger ms-5 mt-2" id="crsError"></p>
+
+                    <label for="ct" class="fs-5 ms-5 mt-4">
+                        Content Title <span class="text-danger fs-3 ms-3">*</span>
+                    </label>
+                    <input type="text" name="ct" id="ct" placeholder="Enter conetent title" class="form-control ms-4 me-5 ps-3">
+                    <p class="text-danger ms-5 mt-2" id="titleError"></p>
+
+                    <label for="video" class="fs-5 ms-5 mt-4">
+                        Upload video <span class=" text-danger fs-3 ms-3">*</span>
+                    </label>
+                    <input type="file" name="video" id="video" placeholder="Enter video files" class="form-control ms-4 me-5 ps-3">
+                    <label for="pdf" class="fs-5 ms-5 mt-4">
+                        Upload PDF <span class=" text-danger fs-3 ms-3">*</span>
+                    </label>
+                    <input type="file" name="pdf" id="pdf" placeholder="Enter pdf files" class="form-control ms-4 me-5 ps-3">
+                    <p class="text-danger ms-5 mt-2" id="filesError"></p>
+                    <button type="submit" class="btn btn-primary fs-5 ms-5 mt-4" id="uploadBtn">
+                        <i class="bi bi-upload me-2"></i>Upload Content
+                    </button>
+                    <button type="reset" class="btn btn-outline-info fs-5 mt-4 ms-5">Cancel</button>
+                    <p class="text-success ms-5 mb-5 fs-5 mt-3">{{ success }}</p>
+                    <p class="text-danger ms-5 mb-5 fs-5 mt-3">{{ fail }}</p>
+                </form>
+            </div>
+            <div class="w-25 text-center rounded-3" id="upload-popup">
+                <p class="fs-5 mt-4">Uploading please wait</p>
+                <div class="spinner-border mb-4"></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let form = document.getElementById("form");
+        let course = document.getElementById("sc");
+        let title = document.getElementById('ct');
+        let video = document.getElementById("video");
+        let pdf = document.getElementById("pdf");
+        let crsError = document.getElementById("crsError");
+        let titleError = document.getElementById("titleError");
+        let filesError = document.getElementById("filesError");
+        let uploadBtn = document.getElementById("uploadBtn");
+        let uploadpopup = document.getElementById("upload-popup");
+
+        uploadpopup.style.display = "none";
+        
+        form.addEventListener("submit" , function(e){
+
+            crsError.innerText = "";
+            titleError.innerText = "";
+
+            uploadpopup.style.display = "block";
+            uploadBtn.disabled = true;
+
+            let isvalid = true;
+            if (course.value === ""){
+                crsError.innerText = "Please select the course";
+                isvalid = false;
+            }
+            if (title.value === ""){
+                titleError.innerText = "Please enter the title";
+                isvalid = false;
+            }
+            if (video.value === "" && pdf.value === ""){
+                filesError.innerText = "Please enter atlease pdf or video"
+                isvalid = false;
+            } else if (pdf.value !== "" && !pdf.value.endsWith('.pdf')){
+                filesError.innerText = "Please upload .pdf files only"
+                isvalid = false
+            }
+            if (!isvalid){
+                e.preventDefault()
+            }
+        });
+    </script>
+</body>
+</html>

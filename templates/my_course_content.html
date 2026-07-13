@@ -1,0 +1,356 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>View course content</title>
+
+    <link rel="stylesheet" href="{% static 'css/bootstrap.css' %}?v=1">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css" 
+    integrity="sha512-2SwdPD6INVrV/lHTZbO2nodKhrnDdJK9/kg2XD1r9uGqPo1cUbujc+IYdlYdEErWNu69gVcYgdxlmVmzTWnetw==" 
+    crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
+    <style>
+        .main-block{
+            background-color: rgb(249, 252, 254);
+        }
+        .imges{
+            height: 180px;
+        }
+        .active-tab{
+            background-color: rgb(231, 243, 253);
+            border-radius: 10px;
+        }
+        .h-500{
+            height: 500px;
+        }
+        
+        #video-tag{
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        .inner-title{
+            background-color: rgb(229, 243, 255);
+        }
+        button{
+            border: none;
+            background-color: white;
+        }
+        .bottom-btn{
+            height: 5px;
+            width: 70px;
+            background-color: rgb(82, 82, 252);
+        }
+        .fa-clapperboard{
+            font-size: 90px;
+            margin-top: 50px;
+            margin-left: 200px;
+        }
+        .video-text{
+            font-size: 40px;
+        }
+        .back-btn{
+            margin-left: 150px;
+        }
+        #empty-video{
+            margin-left: 150px;
+            background-color: rgb(235, 233, 233);
+            margin-right: 100px;
+        }
+        .pdf-display{
+            width: 70%;
+        }
+        .pdf-show{
+            width: 30%;
+        }
+        #empty-pdf{
+            margin-left: 200px;
+            background-color: rgb(235, 233, 233);
+            margin-right: 240px;
+        }
+        .bi-filetype-pdf{
+            font-size: 70px;
+            margin-left: 150px;
+        }
+        .pdf-text{
+            font-size: 40px;
+        }
+        .ms-7{
+            margin-left: 70px;
+        }
+        #pdfviewer{
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        .display-videos{
+            overflow-y: scroll;
+        }
+        .ms-70{
+            margin-left: 700px;
+        }
+        .display-videos{
+            width: 33%;
+        }
+        .progress-block{
+            margin-left: 300px;
+            box-shadow: 0px 0px 7px grey;
+            width:350px ;
+            height: 170px;
+        }
+        .progress-container{
+            height: 15px;
+            width: 90%;
+            background:#e9ecef;
+        }
+        .progress-bar{
+            background:#28a745;
+            transition:0.5s;
+            
+        }
+        .empty-block{
+            border: grey dashed 2px;
+            height: 400px;
+            width: 80%;
+            margin-left: 150px;
+            background-color: rgb(241, 248, 254);
+        }
+        .inner-block{
+            margin-left: 38%;
+            margin-top: 50px;
+        }
+        .bi-folder2-open{
+            font-size: 70px;
+            background-color: rgb(227, 226, 226);
+            border-radius: 50%;
+            margin: 100px;
+        }
+    </style>
+</head>
+<body>
+    <div class="main-block pt-4 ps-4">
+        {% csrf_token %}
+        <div class="course-block">
+            <div class="w-100 d-flex" style="width: 18rem;">
+                <img src="{{ sco.cimage.url }}" class="imges" alt="...">
+                <div class="card-body ms-4 w-25 mt-3">
+                    <h3 class="card-title">{{ sco.cname }}</h3>
+                    <p class="card-text fs-5 mt-3">{{ sco.description }}</p>
+                    <span class=""><i class="bi bi-bar-chart me-2"></i>Beginner</span>
+                    <span class="ms-4"><i class="bi bi-play-btn me-2"></i>{{ vc }} Lessons</span>
+                </div>
+                <div class="progress-block mt-1 me-5 rounded-3">
+                    <h4 class="ms-5 mt-3">{{ progress_bar }}%</h4>
+                    <div class="progress-container mt-2 ms-4 me-4 rounded-4">
+                        <div class="progress-bar h-100 rounded-4" id="percentage"></div>
+                        <p class="fs-5 mt-2 ms-3">{{ cc }}/{{ vc }} Lessons completed</p>
+                        {% if cc == vc %}
+                        <a href="{% url 'certificate' sco.cid %}" class="btn btn-success">Get certificate</a>
+                        {% else %}
+                        
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+            <hr>
+            <div class="mt-4 ms-5 d-flex mb-3">
+                <button class="ps-2 pe-2 pt-2 fs-5" id="videos-btn">
+                    <i class="bi bi-play-circle me-2"></i>Videos
+                    <p class="ms-2 mt-2 rounded-3" id="bottom-video-btn"></p>
+                </button>
+
+                <button class="ms-5 ps-2 pe-2 pt-2 fs-5 me-5" id="pdf-btn">
+                    <i class="bi bi-file-earmark-text me-2"></i>PDFs
+                    <p class="mt-2 rounded-3" id="bottom-pdf-btn"></p>
+                </button>
+                <div class="ms-5">
+                    <a href="{% url 'my_courses' %}" class="text-decoration-none btn btn-primary fs-5 ms-70 pt-2">
+                        <i class="bi bi-arrow-left me-2"></i>Back to courses list
+                    </a>
+                </div>
+
+            </div>
+        </div>
+        <hr>
+         <!-- vidoes tab code starts here -->
+            <div class="d-flex d-none border h-500" id="videos-block">
+                <div class="border rounded-3 m-2 display-videos"> 
+                    {% for cv in cvo %}
+                    <div class="m-2">
+                    <a href="" class="text-decoration-none fs-5 text-dark video-title" data-video="{{ cv.video.url }}" 
+                    data-content-id="{{ cv.id }}">
+                            
+                        <div class="d-flex justify-content-between ms-2 ps-2 pt-1 pb-1 border rounded-3 inner-title">
+                            <span class="me-2">{{ forloop.counter }}.</span>
+                            <span class="">{{ cv.title }}</span>
+                            <span class="me-2">
+                            {% if cv.id in pco %}
+                                <i class="bi bi-check-circle-fill text-success"></i>
+                            {% else %}
+                               <i class="bi bi-circle"></i>
+                            {% endif%}
+                            </span>
+                        </div>
+                    </a>
+                    </div>
+                    {% endfor %} 
+                </div>
+        
+                <div class="w-75 border rounded-3 ms-4 me-4 mt-2 mb-2 video-display">
+                    
+                    <div class="p-3 h-100">
+                        <div class="mt-5 ps-5 pb-4 pe-5 rounded-4" id="empty-video">
+                            <i class="fa-solid fa-clapperboard"></i>
+                            <h1 class="video-text mt-3 ms-5 ps-5">click Video to see</h1>
+                            <p class="fs-5">Select any video from the list to watch and start learning</p>
+                            <a href="{% url 'my_courses' %}" class="text-decoration-none btn btn-primary fs-5 back-btn">
+                                <i class="bi bi-arrow-left me-2"></i>Back to courses list
+                            </a>
+                        </div>
+                        <video id="video-tag" controls>
+                            <source id="video-source" src="">
+                        </video>
+                        
+                    </div>
+                    
+                </div>
+            </div>
+        <!-- vides tab code ends here -->
+
+        <!-- pdf tab code starts here -->
+        <div class="d-flex d-none border h-500" id="pdfs-block">
+                <div class="border rounded-3 m-2 pdf-show"> 
+                    {% for cp in cpo %}
+                    <div class="m-2">
+                    <a href="" class="text-decoration-none fs-5 text-dark pdf-title" data-pdf="{{ cp.pdf.url }}">
+                        <div class="ms-2 ps-2 pt-1 pb-1 border rounded-3 inner-title">
+                            <span class="me-2">{{ forloop.counter }}.</span>
+                            <span class="">{{ cp.pdf.url|cut:'/media/course_pdfs/' }}</span>
+                        </div>
+                    </a>    
+                    </div>
+                    {% endfor %} 
+                </div>
+
+                <div class="border rounded-3 ms-4 me-4 mt-2 mb-2 pdf-display">
+                    <div class="p-3  h-100">
+                        <div id="empty-pdf" class="pb-5 mt-5 rounded-4">
+                            <i class="bi bi-filetype-pdf"></i>
+                            <h1 class="pdf-text ms-5 mt-3 ">Click a PDF to see</h1>
+                            <p class="fs-5 ms-5">Select any PDF from the list to View</p>
+                            <a href="{% url 'my_courses' %}" class="text-decoration-none btn btn-primary fs-5 ms-7">
+                                <i class="bi bi-arrow-left me-2"></i>Back to courses list
+                            </a>
+                        </div>
+                        <iframe frameborder="0" id="pdfviewer"></iframe>
+                    </div>
+                </div>
+            </div>
+
+        <!-- pdf tab code ends here -->
+
+        <!-- empty blcok code starts here -->
+            <div class="empty-block rounded-4 mt-5" id="empty-block">
+                <div class="inner-block">
+                    <i class="bi bi-folder2-open ps-4 pe-4 pt-2 pb-3"></i>
+                    <h1 class="mt-4">No content selected</h1>
+                    <p class="fs-5 ms-5 mt-4">select videos are pdfs above <br>to view course materials.</p>
+                </div>
+            </div>
+        <!-- empty blcok code ends here -->
+        
+    </div>
+
+    <script>
+        let videoBtn = document.getElementById("videos-btn");
+        let videosBlock = document.getElementById("videos-block");
+        let pdfBtn = document.getElementById("pdf-btn");
+        let videoBottom = document.getElementById("bottom-video-btn");
+        let pdfBottom = document.getElementById("bottom-pdf-btn");
+        let pdfBlock = document.getElementById("pdfs-block");
+        let emptyBlock = document.getElementById("empty-block");
+       
+        videoBtn.addEventListener("click" , function(){
+            videoBtn.classList.add("active-tab");
+            videoBottom.classList.add("bottom-btn");
+            pdfBottom.classList.remove("bottom-btn");
+            pdfBtn.classList.remove("active-tab");
+            pdfBlock.classList.add("d-none");
+            videosBlock.classList.remove("d-none");
+            emptyBlock.classList.add("d-none");
+        });
+
+        pdfBtn.addEventListener("click" , function(){
+
+           pdfBtn.classList.add("active-tab");
+            videoBtn.classList.remove("active-tab");
+            videoBottom.classList.remove("bottom-btn");
+            pdfBottom.classList.add("bottom-btn");
+            videosBlock.classList.add("d-none");
+            pdfBlock.classList.remove("d-none");
+            emptyBlock.classList.add("d-none");
+        });
+        //videoplaying code
+
+        let videoTitle = document.querySelectorAll(".video-title");
+        let videoTag = document.getElementById("video-tag");
+        let videoSourse = document.getElementById("video-source");
+        let Emptyvideo = document.getElementById("empty-video");
+
+        let csrfToken = document.querySelector('[name = csrfmiddlewaretoken]').value;
+
+        let contentId = null;
+        videoTag.style.display = "none"
+        videoTitle.forEach(function(title){
+            title.addEventListener("click" , function(e){
+                e.preventDefault();
+                videoTag.style.display = "block"
+                let url = this.getAttribute('data-video');
+                let id = this.getAttribute('data-content-id');
+                contentId = id;
+                console.log(id)
+                console.log(contentId)
+                videoSourse.src = url;
+                videoTag.load();
+                videoTag.play();
+                Emptyvideo.style.display = "none"
+            });
+        });
+        
+        videoTag.addEventListener("ended" , function(){
+            console.log("video is ended");
+            console.log(contentId)
+            fetch("/save_progress/" , {
+                method:"POST" , headers:{
+                    "Content-Type":"application/json",
+                    "x-CSRFToken":csrfToken
+                },
+                body:JSON.stringify({"content_id":contentId})
+            })
+        });
+
+        let pdfTitle = document.querySelectorAll(".pdf-title");
+        let pdfviewer = document.getElementById("pdfviewer");
+        let emptypdf = document.getElementById("empty-pdf");
+
+        pdfviewer.style.display = "none";
+        pdfTitle.forEach(pdf =>{
+            pdf.addEventListener("click" , function(e){
+                e.preventDefault();
+                pdfviewer.style.display = "block";
+                emptypdf.style.display = "none";
+                let pdfurl = this.getAttribute("data-pdf");
+               
+               window.open(pdfurl)
+            });
+        });
+
+        let percentagebar = document.getElementById("percentage");
+        percentagebar.style.width = "{{ progress_bar }}%"
+    </script>
+</body>
+</html>

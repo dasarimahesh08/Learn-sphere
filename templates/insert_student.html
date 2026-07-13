@@ -1,0 +1,310 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Insert student</title>
+
+    <link rel="stylesheet" href="{% static 'css/bootstrap.css' %}">
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.6.2/cropper.min.css">
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.6.2/cropper.min.js"></script>
+
+    <style>
+        .parent-block{
+            width: 98%;
+            height: 100%;
+        }
+        .inner-info{
+            width: 98%;
+            height: 100%;
+        }
+        #gn{
+            color: rgb(78, 78, 78);
+        }
+        .w-div{
+            width: 33%;
+        }
+        .refresh{
+            background-color: whitesmoke;
+        }
+        .boxes{
+            width: 60px;
+            height: 13px;
+            border: 2px solid grey;
+            border-radius: 10px;   
+        }
+        .ms-20{
+            margin-left: 200px;
+        }
+        
+        .main-block{
+            background-color: rgb(245, 243, 241);
+            box-shadow: 0px 0px 4px grey;
+            position: fixed;
+            top: 0px;
+            width: 97%;
+            height:750px;
+        }
+        .crop-div{
+            height: 600px;
+            width: 500px;
+            background-color: rgb(243, 244, 245);
+        }
+        .crop-box{
+            width: 400px;
+            height: 500px;
+            margin: auto;
+            background-color: rgb(240, 239, 239);
+            border-radius: 10px;
+        }
+        #image{
+            width: 100%;
+        }
+        .cropper-view-box,
+        .cropper-face{
+            border-radius: 50%;
+        }
+        .ms-10{
+            margin-left: 150px;
+        }
+        .preview-block{
+            width: 500px;
+            height: 600px;
+        }
+        #previewImg{
+            width: 250px;
+            height: 250px;
+            border-radius: 50%;
+            box-shadow: 0px 0px 9px grey;
+            margin-left:130px;
+            margin-top: 10px;
+        }
+        .img-text{
+            margin-left: 205px;
+            color: rgb(70, 69, 69);
+        }
+        #saveImg{
+            margin-left: 190px;
+        }
+    
+    </style>
+</head>
+<body>
+   <div class="parent-block mt-3 border rounded-3 ms-3">
+        <div class="d-flex">
+            <h1 class="ms-5 mt-4 ">
+                <a href="{% url 'homepage' %}" class="text-dark">
+                    <i class="bi bi-arrow-left fs-2 border rounded-3 ps-3 pe-3 pb-2 pt-1"></i>
+                </a>
+            </h1>
+            <div class="mt-4 ms-3">
+                <h3 class="">Student Registration</h3>
+                <p class="">Fill the below details to create student account</p>
+            </div>
+        </div>
+
+        <div class="">
+            <form method="POST" id="form" enctype="multipart/form-data">
+                {% csrf_token %}
+                <!-- personal information block start here -->
+                <div class="inner-info mt-2 ms-3 border rounded-2">
+                    <h5 class="ms-4 mt-3 text-primary">PERSONAL INFORMATION</h5>
+                    <div class="d-flex ms-5 me-5 mt-3 gap-5">
+                        <div class="w-25">
+                            <label for="sfn" class="fs-5 ms-3">Full Name 
+                                <span class="text-danger fs-3 ms-4">*</span>
+                            </label>
+                            <input type="text" name="sfn" id="sfn" placeholder="Enter full name" class="form-control">
+                            <p class="text-danger ms-4" id="name-error"></p>
+                        </div>
+                        
+                        <div class="w-25">
+                            <label for="se" class="fs-5 ms-3">Email Address 
+                                <span class="text-danger fs-3 ms-4">*</span>
+                            </label>
+                            <input type="email" name="se" id="se" placeholder="Enter email address" class="form-control">
+                            <p class="text-danger ms-4" id="email-error"></p>
+                        </div>
+
+                        <div class="w-25">
+                            <label for="smbn" class="fs-5 ms-3">Mobile Number 
+                                <span class="text-danger fs-3 ms-4">*</span>
+                            </label>
+                            <input type="text" name="smbn" id="smbn" placeholder="Enter mobile number" class="form-control">
+                            <p class="text-danger ms-4" id="mob-error"></p>
+                        </div>
+
+                        <div class="w-25">
+                            <label for="dob" class="fs-5 ms-3">Date of Birth 
+                                <span class="text-danger fs-3 ms-4">*</span>
+                            </label>
+                            <input type="date" name="dob" id="dob" class="form-control">
+                            <p class="text-danger ms-4" id="dob-error"></p>
+                        </div>
+                    </div>
+
+                    <div class="d-flex ms-5 me-5 mt-3">
+                        <div class="w-25">
+                            <label for="gn" class="fs-5 ms-3">Gender
+                                <span class="text-danger fs-3 ms-4">*</span>
+                            </label>
+                            <select name="gn" id="gn" class="rounded-1 w-100 ps-3 pb-2 pt-1">
+                                <option value="" class="" selected>Select gender</option>
+                                <option value="male" class="">Male</option>
+                                <option value="feamle" class="">Female</option>
+                                <option value="others" class="">Others</option>
+                            </select>
+                            <p class="text-danger ms-4" id="gn-error"></p>
+                        </div>
+                        <div class="w-25 ms-4">
+                            <label for="age" class="fs-5 ms-3">Age
+                                <span class="text-danger fs-3 ms-4">*</span>
+                            </label>
+                            <input type="text" name="age" id="age" placeholder="Enter your age" class="form-control">
+                            <p class="text-danger ms-4" id="age-error"></p>
+                        </div>
+                        <div class="w-50 ms-5">
+                            <label for="ad" class="fs-5">Address
+                                <span class="tex-danger fs-3 ms-4">*</span>
+                            </label>
+                            <input type="text" name="ad" id="ad" placeholder="Enter your address" class="form-control">
+                            <p class="text-danger ms-4" id="ad-error"></p>
+                        </div>
+                        
+                    </div>
+
+                    <div class="d-flex ms-5 me-5 mb-4">
+                        <div class="w-100">
+                            <label for="profile" class="fs-5 ms-3">Profile pic
+                                <span class="text-danger ms-4 fs-3">*</span>
+                            </label>
+                            <input type="file" name="profile" id="profile" class="form-control ">
+                        </div>
+                    </div>
+
+                    <div class="d-flex gap-5 main-block d-none rounded-2 mt-2 pb-4" id="profile-popup">
+                        <div class="crop-div border rounded-2 mt-5 ms-5 pt-3">
+                            <div class="crop-box ">
+                                <img id="image" class="border">
+                                <button type="button" id="cropBtn" class="btn btn-success fs-5 mt-3 ms-10">
+                                    <i class="bi bi-check2"></i>
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="preview-block border rounded-2 ms-10 mt-5">
+                            <h3 class="ms-4 mt-4">Preview</h3>
+                            <p class="ms-4">This is how your profile picture will appear</p>
+                            <div class="" id="preview">
+                                <img src="" alt="" id="previewImg">
+                                <h4 class="img-text mt-3">Preview</h4>
+                                <button class="btn btn-primary mt-1 fs-5" id="saveImg">Save Image</button>
+                            </div>
+                        </div>
+                    </div>
+                        
+                </div>
+                <!-- personali information block ends here -->
+                <div class="inner-info border rounded-2 ms-3 mt-3">
+                    <h5 class="ms-3 mt-3 text-primary">ACCOUNT INFORMATION</h5>
+                    <div class="d-flex ms-5 me-5 mb-3 gap-5">
+                        <div class="w-div">
+                            <label for="un" class="ms-3 fs-5">User Name
+                                <span class="text-danger fs-3 ms-4">*</span>
+                            </label>
+                            <input type="text" name="un" id="un" placeholder="Enter user name" class="form-control">
+                            <p class="text-danger ms-4" id="un-error"></p>
+                        </div>
+                        <div class="w-div">
+                            <label for="pw" class="ms-3 fs-5">Password
+                                <span class="text-danger fs-3 ms-4">*</span>
+                            </label>
+                            <input type="password" name="pw" id="pw" placeholder="Enter password"
+                                 class="form-control">
+                            <p class="text-danger ms-4" id="pw-error"></p>
+
+                            <div class="ms-3" id="pw-strength">
+                                <div class="d-flex mt-3">
+                                    <p class="boxes" id="box-1"></p>
+                                    <p class="boxes ms-3" id="box-2"></p>
+                                    <p class="boxes ms-3" id="box-3"></p>
+                                </div>
+                                <p class="">
+                                    <span class="text-danger" id="lower">One lower case</span> , 
+                                    <span class="text-danger" id="upper">One upper case</span> , 
+                                    <span class="text-danger" id="numbers">numbers(0-9)</span> , <br> 
+                                    <span class="text-danger" id="spechar">Special character</span> , 
+                                    <span class="text-danger" id="8char">Atleast 8 characters</span> , 
+                                </p>
+
+                            </div>
+
+                        </div>
+                        <div class="w-div">
+                            <label for="cpw" class="ms-3 fs-5">Confirm Password
+                                <span class="text-danger fs-3 ms-4">*</span>
+                            </label>                         
+                            <input type="password" name="cpw" id="cpw" placeholder="Enter confirm password" 
+                                class="form-control">                               
+                            <p class="text-danger ms-4" id="cpw-error"></p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="inner-info ms-3 mt-3 border rounded-3">
+                    <h5 class="ms-3 mt-3 text-primary">ADDITIONAL INFORMATION</h5>
+                    <div class="d-flex ms-5 me-5 mb-3 gap-5">
+                        <div class="w-div">
+                            <label for="crs" class="ms-3 fs-5">Select Course
+                                <span class="text-danger fs-3 ms-4">*</span>
+                            </label>
+                            <div class="ms-2">
+                                <select name="course" id="course" class="p-1 ps-4 rounded-2 w-50">
+                                    <option value="" disabled selected>Select course</option>
+                                    {% for co in QSCO %}
+
+                                    <option value="{{ co.cid }}">{{ co.cname }}</option>
+
+                                    {% endfor %}
+                                </select>
+                                <p class="text-danger ms-4" id="course-error"></p>
+                            </div>
+
+                        </div>
+                        <div class="w-div">
+                            <label for="tnrs" class="ms-4 fs-5">Select trainer
+                                <span class="text-danger fs-3 ms-4">*</span>
+                            </label> 
+                            <div class="">  
+                                <select name="tnrs" id="tnrs" class="ms-3 rounded-2 p-1 ps-4 w-50">
+                                    <option value="" class="" disabled selected>Select trainer</option>
+
+                                </select>
+                                <p class="text-danger ms-4" id="trainer-error"></p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                
+            <div class="d-flex">
+                <button class="btn btn-primary ms-5 mt-3 fs-5" type="submit" id="register">
+                    <i class="bi bi-floppy me-2"></i>Register
+                </button>
+                <button class="btn refresh border ms-5 mt-3 pe-3" type="reset"><i class="bi bi-arrow-clockwise me-2"></i>Reset</button>
+                <h5 class="text-success fs-4 ms-5 mt-4" id="show-reg">{{ error.success }}</h5>
+                <h5 class="text-danger fs-4 ms-5 mt-4" id="show-reg">{{ error.fail }}</h5>
+            </div>
+            </form>
+        </div>
+    </div>
+
+    <script src="{% static 'js/insert_student.js' %}?v=100"></script>
+    
+</body>
+</html>

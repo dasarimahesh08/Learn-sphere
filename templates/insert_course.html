@@ -1,0 +1,80 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Insert course</title>
+    <link rel="stylesheet" href="{% static 'css/bootstrap.css' %}">
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
+    <style>
+        .input-1{
+            margin-left: 160px;
+        }
+        .input-2{
+            margin-left: 165px;
+        }
+        .input-3{
+            margin-left: 225px;
+        }
+        .input-4{
+            margin-left: 185px;
+        }
+        .sub-btn{
+            margin-left: 60px;
+        }
+        .error-msg{
+            margin-left: 300px;
+        }
+    </style>
+</head>
+<body>
+    <div class="d-flex mb-4">
+        <a href="{% url 'trainer_dashboard' %}" class="btn fs-3 mt-4 pt-2 ms-4 border">
+            <i class="bi bi-arrow-left ms-3 me-3 mt-3"></i>
+        </a>
+        <div class="d-block mt-4 ms-4">
+            <h4 class="">Add Course </h4>
+            <h6 class="">Add a new course to the platform</h6>
+        </div>
+    </div>
+        <form method="POST" class="form-control w-100 ms-5">
+            {% csrf_token %}
+            <div class="mt-4">
+                <div class="d-flex">
+                    <label for="ct" class="fs-5">Course Title <span class="text-danger fs-2">*</span></label>
+                    <input type="text" name="ct" id="ct" placeholder="Enter course title" class="form-control w-75 input-1">
+                </div>
+                <p class="text-danger error-msg">{{ msg.title }}</p>
+            </div>
+            <div class="mt-4">
+                <div class="d-flex">
+                    <label for="des" class="fs-5">Description <span class="text-danger fs-2">*</span></label>
+                    <input type="text" name="des" id="des" placeholder="Enter Description" class="form-control w-75 input-2">
+                </div>
+                <p class="text-danger error-msg">{{ msg.des }}</p>
+            </div>
+            <div class="mt-4">
+                <div class="d-flex">
+                    <label for="rs" class="fs-5">Price<span class="text-danger fs-2">*</span></label>
+                    <input type="text" name="rs" id="rs" placeholder="Enter price of the course" class="form-control w-75 input-3">
+                </div>
+                <p class="text-danger error-msg">{{ msg.rs }}</p>
+            </div>
+            <div class="mt-4">
+                <div class="d-flex">
+                    <label for="duration" class="fs-5">Duration <span class="text-danger fs-2">*</span></label>
+                    <input type="text" name="duration" id="duration" placeholder="Enter Duration of the course" class="form-control w-75 input-4">
+                </div>
+                <p class="text-danger error-msg">{{ msg.duration }}</p>
+            </div>
+            <p class="text-danger error-msg">{{ msg.exist }}</p>
+            <p class="text-success error-msg">{{ msg.login }}</p>
+            <button class="btn btn-danger mt-4 sub-btn">Submit</button>
+
+        </form>
+        
+    
+</body>
+</html>

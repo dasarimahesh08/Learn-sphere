@@ -1,0 +1,255 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Profile</title>
+    <link rel="stylesheet" href="{% static 'css/bootstrap.css' %}">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css" 
+    integrity="sha512-2SwdPD6INVrV/lHTZbO2nodKhrnDdJK9/kg2XD1r9uGqPo1cUbujc+IYdlYdEErWNu69gVcYgdxlmVmzTWnetw==" 
+    crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.6.2/cropper.min.css">
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.6.2/cropper.min.js"></script>
+    <style>
+        .person-icon{
+            font-size: 80px;
+        }
+        .joined-date{
+            background-color: rgb(198, 220, 248);
+        }
+        .update-btn{
+            margin-left: 300px;
+        }
+        .cancel-btn{
+            margin-left: 150px;
+        }
+        .message{
+            margin-left: 300px;
+        }
+                .main-block{
+            background-color: rgb(245, 243, 241);
+            box-shadow: 0px 0px 4px grey;
+            position: fixed;
+            top: 0px;
+            width: 97%;
+            height:750px;
+        }
+        .crop-div{
+            height: 600px;
+            width: 500px;
+            background-color: rgb(243, 244, 245);
+        }
+        .crop-box{
+            width: 400px;
+            height: 500px;
+            margin: auto;
+            background-color: rgb(240, 239, 239);
+            border-radius: 10px;
+        }
+        #image{
+            width: 100%;
+        }
+        .cropper-view-box,
+        .cropper-face{
+            border-radius: 50%;
+        }
+        .ms-10{
+            margin-left: 150px;
+        }
+        .preview-block{
+            width: 500px;
+            height: 600px;
+        }
+        #previewImg{
+            width: 250px;
+            height: 250px;
+            border-radius: 50%;
+            box-shadow: 0px 0px 9px grey;
+            margin-left:130px;
+            margin-top: 10px;
+        }
+        .img-text{
+            margin-left: 205px;
+            color: rgb(70, 69, 69);
+        }
+        #saveImg{
+            margin-left: 190px;
+        }  
+    </style>
+</head>
+<body>
+    <div class=" border rounded-3 h-100 mt-3 ms-3 me-3">
+        <div class="d-flex">
+            <h1 class="ms-3 mt-5">
+                <a href="{% url 'trainer_dashboard' %}" class="text-dark"><i class="bi bi-arrow-left ms-3 mt-3"></i></a>
+            </h1>
+            <h1 class="person-icon text-primary mt-4 ms-5"><i class="bi bi-person-circle"></i></h1>
+            <div class="d-block mt-5 ms-4">
+                <h4 class="">Edit profile</h4>
+                <h6 class="">Update your profile information</h6>
+            </div>
+        </div>
+        <hr>
+        <div class=" d-flex ms-5 mt-4 me-4">
+            <div class="d-block w-75">
+                <form method="POST" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <label for="nm" class="ms-3 mb-2 fs-5">Name</label>
+                    <input type="text" name="nm" id="nm" placeholder="Enter your name" class="form-control mb-3">
+                    <p class="text-danger">{{ message.name }}</p>
+
+                    <label for="email" class="ms-3 mb-2 fs-5">Email</label>
+                    <input type="text" name="email" id="email" placeholder="Enter your Email" class="form-control mb-3">
+                    <p class="text-danger">{{ message.mail }}</p>
+
+                    <label for="spe" class="ms-3 mb-2 fs-5">Specialization</label>
+                    <input type="text" name="spe" id="spe" placeholder="Enter your Specialization" class="form-control mb-3">
+                    <p class="text-danger">{{ message.spe }}</p>
+                    
+                    <label for="exp" class="ms-3 mb-2 fs-5">Experience</label>
+                    <input type="text" name="exp" id="exp" placeholder="Enter your Experience" class="form-control mb-3">
+                    <p class="text-danger">{{ message.exp }}</p>
+
+                    <label for="sal" class="ms-3 mb-2 fs-5">Salary</label>
+                    <input type="text" name="sal" id="sal" placeholder="Enater your salary" class="form-control mb-3">
+                    <p class="text-danger">{{ message.sal }}</p>
+
+                    <label for="pic" class="ms-3 mb-2 fs-5">Profile pic</label>
+                    <input type="file" name="pic" id="pic" class="form-control mb-3">
+
+                <div class="d-flex gap-5 main-block d-none rounded-2 mt-2 pb-4" id="profile-popup">
+                    <div class="crop-div border rounded-2 mt-5 ms-5 pt-3">
+                        <div class="crop-box ">
+                            <img id="image" class="border">
+                            <button type="button" id="cropBtn" class="btn btn-success fs-5 mt-3 ms-10">
+                                <i class="bi bi-check2"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="preview-block border rounded-2 ms-10 mt-5">
+                        <h3 class="ms-4 mt-4">Preview</h3>
+                        <p class="ms-4">This is how your profile picture will appear</p>
+                        <div class="" id="preview">
+                            <img src="" alt="" id="previewImg">
+                            <h4 class="img-text mt-3">Preview</h4>
+                            <button class="btn btn-primary mt-1 fs-5" type="button" id="saveImg">Save Image</button>
+                        </div>
+                    </div>
+                </div>
+
+                    <button class="btn btn-primary update-btn fs-5 mb-4"><i class="bi bi-floppy fs-5 me-2"></i>Update</button>
+
+                    <button class="btn btn-dark cancel-btn fs-5 mb-4">
+                        <a href="{% url 'trainer_dashboard' %}" class="text-white text-decoration-none">Cancel</a>
+                    </button>
+                    <p class="text-danger">{{ message.error }}</p>
+                    <p class="text-success fs-5 message">{{ message.updated }}</p>
+                </form> 
+            </div>
+            <div class="d-block">
+                <div class="joined-date border w-100 ms-4 mt-5 rounded-3">
+                    <div class="d-flex">
+                        <h1 class="text-primary mt-3 me-3"><i class="fa-solid fa-calendar-days fs-1 ms-3"></i></h1>
+                        <div class="d-block mt-2">
+                            <h4 class="text-primary">Joined date</h4>
+                            <h5 class="">{{ to.dateofjoined }}</h5>
+                        </div>
+                    </div>
+                    <hr>
+                    <h6 class="ms-3"><i class="bi bi-info-circle me-2"></i>
+                        Joined date is set automatically <br> <span class="ms-4">and cannot be changed.</span>
+                    </h6>
+
+                </div>
+            </div>
+        </div>
+        
+
+    </div>
+
+    <script>
+
+        let profile = document.getElementById("pic");
+        let profilepopup = document.getElementById("profile-popup");
+        let image = document.getElementById("image");
+
+        profile.addEventListener("change" , function(){
+            let pic = profile.files[0];
+            if (pic){
+                let imageURL = URL.createObjectURL(pic)
+                image.src = imageURL
+                profilepopup.classList.remove("d-none");
+
+            }
+        });
+
+       
+        let cropBtn = document.getElementById("cropBtn");
+
+        let cropper;
+        image.onload = function(){
+            if (cropper){
+                cropper.destroy();
+            }
+             cropper = new Cropper(image , {
+                aspectRatio: 1,
+                viewMode: 1
+            });
+        }
+
+        let previewBox = document.getElementById("preview");
+        previewBox.style.display = "none"
+
+        let previewImage = document.getElementById("previewImg");
+        let croppedImage;
+        cropBtn.addEventListener("click" , function(){
+            // getting cropped image
+            let canvas = cropper.getCroppedCanvas({
+                width : 300 , 
+                height : 300
+            });
+
+            //convert cropped image
+            croppedImage = canvas.toDataURL('image/png');
+
+            previewImage.src = croppedImage;
+
+            previewBox.style.display = "block";
+            console.log(croppedImage)
+        });
+
+        let saveBtn = document.getElementById("saveImg");
+
+        saveBtn.addEventListener("click", function(){
+            if (!croppedImage){
+                alert("please crop the image")
+                return;
+            }
+            fetch(croppedImage)
+            .then(res => res.blob())
+            .then(blob => {
+                let Filename = profile.files[0];
+
+                let originalfilename = Filename.name;
+
+                let file = new File([blob] , originalfilename , {type:"image/png"})
+
+                let datatransfer = new DataTransfer();
+                datatransfer.items.add(file);
+                alert("image saved successfully")
+                profile.files = datatransfer.files;
+                console.log(profile.files[0]);
+                profilepopup.classList.add("d-none")
+
+            }); 
+        });
+    </script>
+</body>
+</html>

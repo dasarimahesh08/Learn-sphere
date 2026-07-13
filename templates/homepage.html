@@ -1,0 +1,209 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>J spiders</title>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css" 
+    integrity="sha512-2SwdPD6INVrV/lHTZbO2nodKhrnDdJK9/kg2XD1r9uGqPo1cUbujc+IYdlYdEErWNu69gVcYgdxlmVmzTWnetw==" 
+    crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+    <link rel="stylesheet" href="{% static 'css/bootstrap.css' %}">
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
+    
+    <style>
+        .navBar{
+            background-color: rgb(6, 6, 122);
+        }
+        .navtext{
+            font-family: Arial, Helvetica, sans-serif;
+        }
+        .coursesblock{
+            background-color: aliceblue;
+        }
+        #signup{
+            margin-left: 800px ;
+        }
+        #signin{
+            margin-left: 100px;
+        }
+      
+        .popups{
+            width: 30%;
+            background-color: rgb(235, 236, 237);
+            position: fixed;
+            left: 40%;
+            z-index: 100;
+            box-shadow: 0px 0px 5px grey;
+        }
+        #close{
+            margin-left: 146px;
+            margin-top: -11px;
+            width: 35px;
+            height: 30px;
+        }
+        .fa-xmark{
+            padding: 8px 20px 8px 13px;
+            border-radius: 4px;
+            
+        }
+        .images{
+            height: 170px;
+        }
+        .close{
+            border: none;
+            margin-left: 93%;
+        }
+        .bi-person-circle{
+            font-size: 80px;
+            margin-left: 40%;
+        }
+        .text{
+            margin-left: 25%;
+        }
+       .bi-mortarboard-fill{
+        font-size: 50px;
+        background-color: rgb(224, 224, 255);
+       }
+       .bi-person{
+        font-size: 50px;
+        background-color: rgb(224, 224, 255);
+       }
+    </style>
+</head>
+<body>
+   
+    <nav class="d-flex navBar ">
+        <h1 class="text-white m-2 ms-5 navtext">Welcome to Jspiders</h1>
+        <button class="btn btn-primary h-50 mt-3" id="signup">sign up</button>
+        <button class="btn btn-info h-50 mt-3" id="signin">sign in</button>
+    </nav> 
+        <div class="coursesblock" >
+            <h2 class="text-dark ms-5 navtext mt-2">Available courses : </h2> 
+            <div class="d-flex flex-wrap">
+
+                <!-- sign up popup -->
+                <div class="mt-2 rounded-2 popups" id = "signup-popup">
+                    <button class="text-dark mt-2 close" id="closesignup">
+                        <i class="bi bi-x-lg"></i>
+                    </button>
+                    <i class="bi bi-person-circle text-primary"></i>
+                    <h3 class="text">Create Account</h3>
+                    <p class="ms-5 ps-3">Choose your account type to get started</p>
+                    <div class="d-flex">
+                        <a href="{% url 'insert_trainer' %}" class="ms-4 w-100 me-5 pt-2 text-decoration-none text-dark
+                         border border-dark rounded-2">
+                            <div class="d-flex ms-3">
+                                <i class="bi bi-mortarboard-fill ms-2 mb-4 mt-2 ps-3 pe-3 rounded-2 text-primary"></i>
+                                <div class="ms-4">
+                                    <h4 class="mt-4">Signup as Trainer</h4>
+                                    <p class="">Create your trainer account</p>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+
+                    <div class="d-flex mt-4 mb-4">
+                        <a href="{% url 'insert_student' %}" class="ms-4 w-100 me-5 pt-2 text-decoration-none text-dark
+                         border border-dark rounded-2">
+                            <div class="d-flex ms-3">
+                                <i class="bi bi-person text-success ms-2 mb-4 mt-2 ps-3 pe-3 rounded-2 "></i>
+                                <div class="ms-4">
+                                    <h4 class="mt-4">Signup as Student</h4>
+                                    <p class="">Create your student account</p>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- signin popup -->
+                <div class="mt-2 rounded-2 popups" id = "signin-popup">
+                   <button class="text-dark mt-2 close" id="closesignin">
+                        <i class="bi bi-x-lg"></i>
+                    </button>
+                    <i class="bi bi-person-circle text-primary"></i>
+                    <h3 class="text">Welcome Back</h3>
+                    <p class="ms-5 ps-5">Choose your account type to sign in</p>
+                    <div class="d-flex">
+                        <a href="{% url 'signin_trainer' %}" class="ms-4 w-100 me-5 pt-2 text-decoration-none text-dark
+                         border border-dark rounded-2">
+                            <div class="d-flex ms-3">
+                                <i class="bi bi-mortarboard-fill ms-2 mb-4 mt-2 ps-3 pe-3 rounded-2 text-primary"></i>
+                                <div class="ms-4">
+                                    <h4 class="mt-4">Sign in as Trainer</h4>
+                                    <p class="">Access your trainer account</p>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+
+                    <div class="d-flex mt-4 mb-4">
+                        <a href="{% url 'signin_student' %}" class="ms-4 w-100 me-5 pt-2 text-decoration-none text-dark
+                         border border-dark rounded-2">
+                            <div class="d-flex ms-3">
+                                <i class="bi bi-person text-success ms-2 mb-4 mt-2 ps-3 pe-3 rounded-2 "></i>
+                                <div class="ms-4">
+                                    <h4 class="mt-4">Sign in as Student</h4>
+                                    <p class="">Access your student account</p>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+                
+                {% for co in QSLCO %}
+                <div class="col-3">
+                    <div class="mt-3 ms-5 mb-4 rounded-5">
+                        <div class="card " style="width: 18rem;">
+                            <img src="{{ co.cimage.url }}" alt="" class="images">
+                            <div class="card-body">
+                                <h5 class="card-title">{{ co.cname }}</h5>
+                                <p class="card-text">{{ co.description }}</p>
+                                <a href="{% url 'course_detail' co.cid %}" class="btn btn-dark">Learn more</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+               
+            </div>
+        </div>
+
+        
+    <script>
+        let logbtn = document.getElementById('signup')
+        let displaybtn = document.getElementById('signup-popup')
+        let closebtn = document.getElementById('closesignup')
+
+        let signinbtn = document.getElementById('signin')
+        let popupbtn = document.getElementById('signin-popup')
+        let crossbtn = document.getElementById('closesignin')
+
+        displaybtn.style.display = 'none' ;     
+        logbtn.addEventListener('click' , function(){
+                    
+            displaybtn.style.display = 'block' ;
+            popupbtn.style.display = "none"
+            closebtn.addEventListener('click' , function(){
+            displaybtn.style.display = 'none' ;
+            });
+        });
+                
+        popupbtn.style.display = 'none' ;
+
+        signinbtn.addEventListener('click' , function(){
+            popupbtn.style.display = 'block' ;
+
+            crossbtn.addEventListener('click' , function(){
+            popupbtn.style.display = 'none' ;
+            });
+
+        });
+    </script>
+
+</body>
+</html>
