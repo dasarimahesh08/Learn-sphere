@@ -97,6 +97,9 @@ def insert_trainer(request):
             if TTO[1]:
                 showmsg['success'] = "Registarion is successfully completed"
                 try:
+                    print("EMAIL HOST = " , settings.EMAIL_HOST)
+                    print("EMAIL_HOST_USER = ", settings.EMAIL_HOST_USER)
+                    print("EMAIL_HOST_PASSWORD = " , settings.EMAIL_HOST_PASSWORD)
                     send_mail("Registration" , f''' hey {name} , your registration is successfully completed 
                     Thanks for choosing our website ''' ,
                     settings.EMAIL_HOST_USER
