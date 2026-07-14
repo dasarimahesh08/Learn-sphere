@@ -15,6 +15,7 @@ from pathlib import Path
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
+import os
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/6.0/howto/deployment/checklist/
@@ -23,7 +24,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-v2$ln+x2b9^l^$hr+6m_p^!uv3sxhklo&ma(6($g@gd^k1oot6'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = os.getenv("DEBUG", "False") == "True"
 
 ALLOWED_HOSTS = [
     "learn-sphere-3vmg.onrender.com" ,
@@ -57,7 +58,7 @@ MIDDLEWARE = [
 ]
 
 ROOT_URLCONF = 'student_project.urls'
-import os
+
 TEMPLATE_DIR = os.path.join(BASE_DIR , 'templates')
 STATICFILES_DIRS = [os.path.join(BASE_DIR , 'static')]
 STATIC_ROOT = os.path.join(BASE_DIR , 'staticfiles')
@@ -130,15 +131,5 @@ USE_TZ = True
 STATIC_URL = 'static/'
 MEDIA_URL = '/media/'
 
-EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
-EMAIL_HOST = os.getenv("EMAIL_HOST" , "smtp-relay.brevo.com")
-EMAIL_HOST_USER = os.getenv("EMAIL_HOST_USER" , "b1f1a9001@smtp-brevo.com")
-EMAIL_HOST_PASSWORD = os.getenv("EMAIL_HOST_PASSWORD")
-EMAIL_USE_TLS = False
-EMAIL_USE_SSL = True
-EMAIL_PORT = 465
 
-
-RAZORPAY_KEY_ID = "rzp_live_T1Nq64oPe2u5DS"
-RAZORPAY_KEY_SECRET = "am00tmjwm7RVZtrrG6NP1rXH"
 
