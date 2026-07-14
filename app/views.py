@@ -96,13 +96,13 @@ def insert_trainer(request):
         
             if TTO[1]:
                 showmsg['success'] = "Registarion is successfully completed"
-                # try:
-                #     send_mail("Registration" , f''' hey {name} , your registration is successfully completed 
-                #     Thanks for choosing our website ''' ,
-                #     'maheshdasarimahesh30@gmail.com' , 
-                #     [mail] , fail_silently = False)
-                # except Exception as e:
-                #     print("MAIL ERROR : " , repr(e))
+                try:
+                    send_mail("Registration" , f''' hey {name} , your registration is successfully completed 
+                    Thanks for choosing our website ''' ,
+                    settings.EMAIL_HOST_USER
+                    [mail] , fail_silently = False)
+                except Exception as e:
+                    print("MAIL ERROR : " , repr(e))
 
                 return HttpResponseRedirect(reverse('homepage'))
             else:
@@ -144,13 +144,16 @@ def insert_student(request):
         TSO[0].tid.add(TO)
         if TSO[1]:
             error['success'] = "Registration successfully completed"
+            try:
+                send_mail("Registration" , 
+                f''' Hey {username} , Your registration is successfully completed
+                    Thank you for choosing our website ''' , 
+                    'maheshdasarimahesh30@gmail.com' , 
+                    [email] , 
+                    fail_silently = False)
+            except Exception as e:
+                print("MAIL ERROR : " , repr(e))
 
-            send_mail("Registration" , 
-            f''' Hey {username} , Your registration is successfully completed
-                Thank you for choosing our website ''' , 
-                'maheshdasarimahesh30@gmail.com' , 
-                [email] , 
-                fail_silently = False)
             return HttpResponseRedirect(reverse('homepage'))
         else:
             error['fail'] = "Entered details already exist"
@@ -279,10 +282,12 @@ def otp_sent(request):
                     request.session['email'] = email
                     error['email'] = email
                     error['showotp'] = True
-                    
-                    send_mail('your OTP for forgot password' ,
-                    otp , 'maheshdasarimahesh30@gmail.com' ,
-                    [email] , fail_silently = False)
+                    try:
+                        send_mail('your OTP for forgot password' ,
+                        otp , 'maheshdasarimahesh30@gmail.com' ,
+                        [email] , fail_silently = False)
+                    except Exception as e:
+                        print("MAIL ERROR : " , repr(e))
                 else:
                     error['mailerror'] = "Email does not match"
     else:
@@ -628,10 +633,13 @@ def send_otp(request):
                 request.session['email'] = email
                 error['email'] = email
                 error['showotp'] = True
-                    
-                send_mail('your OTP for forgot password' ,
-                otp , 'maheshdasarimahesh30@gmail.com' ,
-                [email] , fail_silently = False)
+
+                try:   
+                    send_mail('your OTP for forgot password' ,
+                    otp , 'maheshdasarimahesh30@gmail.com' ,
+                    [email] , fail_silently = False)
+                except Exception as e:
+                    print("MAIL ERROR : " , repr(e))
             else:
                 error['mailerror'] = "Email does not match"
 

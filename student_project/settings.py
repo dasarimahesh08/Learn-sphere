@@ -130,12 +130,13 @@ USE_TZ = True
 STATIC_URL = 'static/'
 MEDIA_URL = '/media/'
 
-EMAIL_HOST = os.getenv("EMAIL_HOST" , 'smtp.gmail.com')
-EMAIL_HOST_USER = os.getenv("EMAIL_HOST_USER", "maheshdasarimahesh30@gmail.com")
-EMAIL_HOST_PASSWORD =  os.getenv("EMAIL_HOST_PASSWORD" , 'strp sxbi uirn fpqu')
+EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
+EMAIL_HOST = os.getenv("EMAIL_HOST" , "smtp-relay.brevo.com")
+EMAIL_HOST_USER = os.getenv("EMAIL_HOST_USER" , "b1f1a9001@smtp-brevo.com")
+EMAIL_HOST_PASSWORD = os.getenv("EMAIL_HOST_PASSWORD")
 EMAIL_USE_TLS = True
 EMAIL_USE_SSL = False
-EMAIL_PORT = int(os.getenv("EMAIL_PORT", 587))
+EMAIL_PORT = 587
 
 
 RAZORPAY_KEY_ID = "rzp_live_T1Nq64oPe2u5DS"
