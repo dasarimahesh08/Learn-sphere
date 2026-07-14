@@ -14,7 +14,6 @@ from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
-
 import os
 
 # Quick-start development settings - unsuitable for production
@@ -24,7 +23,7 @@ import os
 SECRET_KEY = 'django-insecure-v2$ln+x2b9^l^$hr+6m_p^!uv3sxhklo&ma(6($g@gd^k1oot6'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = os.getenv("DEBUG", "False") == "True"
+DEBUG = True
 
 ALLOWED_HOSTS = [
     "learn-sphere-3vmg.onrender.com" ,
