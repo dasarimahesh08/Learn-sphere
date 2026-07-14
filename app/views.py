@@ -18,6 +18,7 @@ import uuid
 import razorpay 
 from django.conf import settings
 from app.google_drive import upload_file_to_drive , get_drive_file_url
+import traceback
 # Create your views here.
 
 def homepage(request):
@@ -102,10 +103,10 @@ def insert_trainer(request):
                     print("EMAIL_HOST_PASSWORD = " , settings.EMAIL_HOST_PASSWORD)
                     send_mail("Registration" , f''' hey {name} , your registration is successfully completed 
                     Thanks for choosing our website ''' ,
-                    settings.EMAIL_HOST_USER
+                    settings.EMAIL_HOST_USER , 
                     [mail] , fail_silently = False)
                 except Exception as e:
-                    print("MAIL ERROR : " , repr(e))
+                    traceback.print_exc()
 
                 return HttpResponseRedirect(reverse('homepage'))
             else:
