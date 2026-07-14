@@ -753,3 +753,22 @@ def view_video(request , id):
 
     d = {'cvo':cvo}
     return render(request , 'view_video.html' , d)
+
+
+import socket
+from django.http import HttpResponse
+
+def socket_test(request):
+    try:
+        socket.setdefaulttimeout(10)
+
+        s = socket.create_connection(
+            ("smtp-relay.brevo.com",587)
+        )
+
+        s.close()
+
+        return HttpResponse("CONNECTED")
+
+    except Exception as e:
+        return HttpResponse(str(e))
