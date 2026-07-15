@@ -296,32 +296,28 @@ def student_change_pw(request):
 
 def otp_sent(request):
     error = {}
-    std = request.session.get('sid')
-    if std:
-        if request.method == "POST":
-            email = request.POST['mail']
-            if email:
-                so = Student.objects.filter(semail = email )
-                if so:
-                    otp = ""
-                    for n in range(6):
-                        otp += str(random.randint(0,9))
-                    request.session['otp'] = otp
-                    request.session['email'] = email
-                    error['email'] = email
-                    error['showotp'] = True
-                    try:
-                        send_brevo_email(
-                            subject="Your OTP for forgot password",
-                            html_content=otp,
-                            to_email=email,
-                        )
-                    except Exception as e:
-                        print("MAIL ERROR : " , repr(e))
-                else:
-                    error['mailerror'] = "Email does not match"
-    else:
-        return redirect('homepage')
+    if request.method == "POST":
+        email = request.POST['mail']
+        if email:
+            so = Student.objects.filter(semail = email )
+            if so:
+                otp = ""
+                for n in range(6):
+                    otp += str(random.randint(0,9))
+                request.session['otp'] = otp
+                request.session['email'] = email
+                error['email'] = email
+                error['showotp'] = True
+                try:
+                    send_brevo_email(
+                    subject="Your OTP for forgot password",
+                        html_content=otp,
+                        to_email=email,
+                    )
+                except Exception as e:
+                    print("MAIL ERROR : " , repr(e))
+            else:
+                error['mailerror'] = "Email does not match"
 
     return render(request , 'student_forgot_pw.html' , {'error':error})
 

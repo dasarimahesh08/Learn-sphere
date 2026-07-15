@@ -30,7 +30,7 @@
         
         #video-tag{
             width: 100%;
-            height: 100%;
+            height: 90%;
             object-fit: cover;
         }
         .inner-title{
@@ -87,14 +87,13 @@
             height: 100%;
             object-fit: cover;
         }
-        .display-videos{
-            overflow-y: scroll;
-        }
         .ms-70{
             margin-left: 700px;
         }
+        
         .display-videos{
             width: 33%;
+            overflow-y: scroll;
         }
         .progress-block{
             margin-left: 300px;
@@ -211,9 +210,9 @@
                                 <i class="bi bi-arrow-left me-2"></i>Back to courses list
                             </a>
                         </div>
-                        <iframe id="video-tag" allow="autoplay" frameborder="0">
-                        </iframe>
+                        <iframe id="video-tag" allow="autoplay" frameborder="0"> </iframe>
                         
+                        <button id="mark-complete-btn" class="btn btn-success mt-3 ms-5">Mark this video as completed</button>
                     </div>
                     
                 </div>
@@ -298,15 +297,18 @@
         let videoTitle = document.querySelectorAll(".video-title");
         let videoTag = document.getElementById("video-tag");
         let Emptyvideo = document.getElementById("empty-video");
-
+        let markCompleteBtn = document.getElementById("mark-complete-btn");
         let csrfToken = document.querySelector('[name = csrfmiddlewaretoken]').value;
 
         let contentId = null;
+
+        markCompleteBtn.style.display = "none"
         videoTag.style.display = "none"
         videoTitle.forEach(function(title){
             title.addEventListener("click" , function(e){
                 e.preventDefault();
                 videoTag.style.display = "block"
+                markCompleteBtn.style.display = "block"
                 let url = this.getAttribute('data-video');
                 let id = this.getAttribute('data-content-id');
                 contentId = id;
@@ -317,7 +319,7 @@
 
         // mark-as-complete button (replaces the old "ended" event, since iframes
         // don't fire an "ended" event the way <video> tags do)
-        let markCompleteBtn = document.getElementById("mark-complete-btn");
+        
         if (markCompleteBtn) {
             markCompleteBtn.addEventListener("click", function () {
                 if (!contentId) return;
