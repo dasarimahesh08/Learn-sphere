@@ -5,10 +5,21 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sign in Student</title>
+
     <link rel="stylesheet" href="{% static 'css/bootstrap.css' %}">
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
+    <style>
+        .navtohome{
+            font-size: 50px;
+            margin-top: 20px;
+        }
+    </style>
 </head>
 <body>
     <h1 class="bg-primary p-2">student login page</h1>
+    
+    <a href="{% url 'homepage' %}" class="text-decoration-none text-dark ms-5 navtohome"><i class="bi bi-arrow-left-circle"></i></a>
     <center>
         <form method="POST" class="form-control w-25">
             {% csrf_token %}
