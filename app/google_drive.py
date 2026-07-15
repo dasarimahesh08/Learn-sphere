@@ -12,35 +12,28 @@ SCOPES = ['https://www.googleapis.com/auth/drive.file']
 from google.auth.transport.requests import Request
 
 def authenticate_google_drive():
-    creds = None
+    creds = Credentials(
+        token=os.getenv("GOOGLE_ACCESS_TOKEN"),
+        refresh_token=os.getenv("GOOGLE_REFRESH_TOKEN"),
+        token_uri=os.getenv("GOOGLE_TOKEN_URI", "https://oauth2.googleapis.com/token"),
+        client_id=os.getenv("GOOGLE_CLIENT_ID"),
+        client_secret=os.getenv("GOOGLE_CLIENT_SECRET"),
+        scopes=SCOPES,
+    )
 
-    if os.path.exists("token.json"):
-        print("Using existing token")
-        creds = Credentials(
-            token=os.getenv("GOOGLE_ACCESS_TOKEN"),
-            refresh_token=os.getenv("GOOGLE_REFRESH_TOKEN"),
-            token_uri=os.getenv("GOOGLE_TOKEN_URI"),
-            client_id=os.getenv("GOOGLE_CLIENT_ID"),
-            client_secret=os.getenv("GOOGLE_CLIENT_SECRET"),
-            scopes=SCOPES
-        )
-    else:
-        print("No token found")
-
-    if not creds or not creds.valid:
-
-        # refresh expired token
-        if creds and creds.expired and creds.refresh_token:
+    if not creds.valid:
+        if creds.refresh_token:
             print("Refreshing token")
             creds.refresh(Request())
-
-        with open("token.json", "w") as token:
-            token.write(creds.to_json())
+        else:
+            raise Exception(
+                "No valid Google Drive credentials — check GOOGLE_ACCESS_TOKEN, "
+                "GOOGLE_REFRESH_TOKEN, GOOGLE_CLIENT_ID, GOOGLE_CLIENT_SECRET env vars on Render."
+            )
 
     service = build("drive", "v3", credentials=creds)
-
     return service
-
+    
 def upload_file_to_drive(uploaded_file):
     service = authenticate_google_drive()
 
