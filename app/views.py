@@ -469,6 +469,8 @@ def my_course_content(request , id):
         pro_cal = cc/vc*100
         print(pro_cal)
         progress_bar = int(pro_cal)
+        for cv in cvo:
+            cv.video_url = get_drive_file_url(cv.video)
         
     else:
         return redirect('homepage')
