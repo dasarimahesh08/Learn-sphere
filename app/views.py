@@ -20,6 +20,7 @@ from django.conf import settings
 from app.google_drive import upload_file_to_drive , get_drive_file_url
 import traceback
 import requests
+import os
 # Create your views here.
 
 def send_brevo_email(subject, html_content, to_email, to_name=""):
