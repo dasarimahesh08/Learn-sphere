@@ -19,7 +19,33 @@ import razorpay
 from django.conf import settings
 from app.google_drive import upload_file_to_drive , get_drive_file_url
 import traceback
+import requests
 # Create your views here.
+
+def send_brevo_email(subject, html_content, to_email, to_name=""):
+    api_key = os.getenv("BREVO_API_KEY")
+    if not api_key:
+        print("BREVO_API_KEY is not set — cannot send email")
+        return False
+    url = "https://api.brevo.com/v3/smtp/email"
+    headers = {
+        "accept": "application/json",
+        "api-key": api_key,
+        "content-type": "application/json",
+    }
+    payload = {
+        "sender": {"name": "LearnSphere", "email": "maheshdasarimahesh30@gmail.com"},
+        "to": [{"email": to_email, "name": to_name or to_email}],
+        "subject": subject,
+        "htmlContent": html_content,
+    }
+    try:
+        response = requests.post(url, json=payload, headers=headers, timeout=10)
+        response.raise_for_status()
+        return True
+    except requests.RequestException as e:
+        print("BREVO MAIL ERROR:", repr(e))
+        return False
 
 def homepage(request):
     QSLCO = Course.objects.all()
@@ -98,13 +124,11 @@ def insert_trainer(request):
             if TTO[1]:
                 showmsg['success'] = "Registarion is successfully completed"
                 try:
-                    print("EMAIL HOST = " , settings.EMAIL_HOST)
-                    print("EMAIL_HOST_USER = ", settings.EMAIL_HOST_USER)
-                    print("EMAIL_HOST_PASSWORD = " , settings.EMAIL_HOST_PASSWORD)
-                    send_mail("Registration" , f''' hey {name} , your registration is successfully completed 
-                    Thanks for choosing our website ''' ,
-                    settings.EMAIL_HOST_USER , 
-                    [mail] , fail_silently = False)
+                   send_brevo_email(
+                        subject="Registration",
+                        html_content=f"Hey {name}, your registration is successfully completed. Thanks for choosing our website.",
+                        to_email=mail,
+                    )
                 except Exception as e:
                     traceback.print_exc()
 
@@ -149,12 +173,11 @@ def insert_student(request):
         if TSO[1]:
             error['success'] = "Registration successfully completed"
             try:
-                send_mail("Registration" , 
-                f''' Hey {username} , Your registration is successfully completed
-                    Thank you for choosing our website ''' , 
-                    'maheshdasarimahesh30@gmail.com' , 
-                    [email] , 
-                    fail_silently = False)
+                send_brevo_email(
+                    subject="Registration",
+                    html_content=f"Hey {username}, Your registration is successfully completed. Thank you for choosing our website.",
+                    to_email=email,
+                )
             except Exception as e:
                 print("MAIL ERROR : " , repr(e))
 
@@ -287,9 +310,11 @@ def otp_sent(request):
                     error['email'] = email
                     error['showotp'] = True
                     try:
-                        send_mail('your OTP for forgot password' ,
-                        otp , 'maheshdasarimahesh30@gmail.com' ,
-                        [email] , fail_silently = False)
+                        send_brevo_email(
+                            subject="Your OTP for forgot password",
+                            html_content=otp,
+                            to_email=email,
+                        )
                     except Exception as e:
                         print("MAIL ERROR : " , repr(e))
                 else:
@@ -639,9 +664,11 @@ def send_otp(request):
                 error['showotp'] = True
 
                 try:   
-                    send_mail('your OTP for forgot password' ,
-                    otp , 'maheshdasarimahesh30@gmail.com' ,
-                    [email] , fail_silently = False)
+                   send_brevo_email(
+                        subject="Your OTP for forgot password",
+                        html_content=otp,
+                        to_email=email,
+                    )
                 except Exception as e:
                     print("MAIL ERROR : " , repr(e))
             else:
