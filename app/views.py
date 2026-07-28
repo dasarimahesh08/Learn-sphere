@@ -323,40 +323,34 @@ def otp_sent(request):
 
 def otp_verify(request):
     display = {}
-    std = request.session.get('sid')
-    if std:
-        if request.method == "POST":
-            enteredOTP = request.POST['otp']
-            mainotp = request.session.get('otp')
-            display['showotp'] = True
-            if mainotp == enteredOTP:
-                display['verified'] = "OTP verification completed"
-                display['showpw'] = True
-                display['otp'] = enteredOTP
-            else:
-                display['notverified'] = "Invalid OTP entered"
-    else:
-        return redirect('homepage')
-
+    
+    if request.method == "POST":
+        enteredOTP = request.POST['otp']
+        mainotp = request.session.get('otp')
+        display['showotp'] = True
+        if mainotp == enteredOTP:
+            display['verified'] = "OTP verification completed"
+            display['showpw'] = True
+            display['otp'] = enteredOTP
+        else:
+            display['notverified'] = "Invalid OTP entered"
+    
     return render(request , 'student_forgot_pw.html' , {'display':display})
 
 def password_validate(request):
     msg = {}
-    std = request.session.get('sid')
-    if std:
-        if request.method == "POST":
-            newpw = request.POST['newpw']
-            mail = request.session.get('email')
-            encnewpw = make_password(newpw)
-            spuo = Student.objects.filter(semail = mail).update(spassword = encnewpw)
-            if spuo:
-                msg['updated'] = "Your password is updated"
-                request.session.flush()
-                return redirect('signin_student')
-            else: 
-                msg['notupdated'] = "Password updation failed"
-    else:
-        return redirect('homepage')
+    
+    if request.method == "POST":
+        newpw = request.POST['newpw']
+        mail = request.session.get('email')
+        encnewpw = make_password(newpw)
+        spuo = Student.objects.filter(semail = mail).update(spassword = encnewpw)
+        if spuo:
+            msg['updated'] = "Your password is updated"
+            request.session.flush()
+            return redirect('signin_student')
+        else: 
+            msg['notupdated'] = "Password updation failed"
 
     return render(request , 'student_forgot_pw.html' , {'msg':msg})
 
