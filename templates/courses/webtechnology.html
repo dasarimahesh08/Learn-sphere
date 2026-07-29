@@ -7,6 +7,8 @@
     <title>Web Technology</title>
     <link rel="stylesheet" href="{% static 'css/bootstrap.css' %}">
 
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
+
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css" 
     integrity="sha512-2SwdPD6INVrV/lHTZbO2nodKhrnDdJK9/kg2XD1r9uGqPo1cUbujc+IYdlYdEErWNu69gVcYgdxlmVmzTWnetw=="
      crossorigin="anonymous" referrerpolicy="no-referrer" />
@@ -46,12 +48,15 @@
 </head>
 <body>
     <div class="parentdiv">
+        <a href="{% url 'homepage' %}" class="text-white fs-1 ms-4 mt-3">
+            <i class="bi bi-arrow-left-circle"></i>
+        </a>
         <div class="d-flex justify-content-center  ">
             <div class="d-block card w-50 bg-warning text-center mt-3 detailsdiv">
                 <h2>Course Name : {{ course.cname }}</h2>
                 <h2>Available Trainers : 
                     {% for tnr in qslto %}
-                        {{ tnr.tname }}
+                        {{ tnr.tname }} ,     
                     {% endfor %}
                 </h2>
                 <h2>Durtions : {{ course.duration }}</h2>

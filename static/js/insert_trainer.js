@@ -128,6 +128,7 @@
             let isvalid = true
             let pattern = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[\d])(?=.*[!@#$%^&*]).{8,}$/
             let salcheck = /(?=.*[\d])/
+            let namecheck = /^[A-Za-z\s]+$/
 
             nameerror.innerText = ""
             emailerror.innerText = ""
@@ -139,6 +140,9 @@
             
             if (tname.value ===""){
                 nameerror.innerText = "Please enter the your name"
+                isvalid = false
+            } else if (!(tname.value.match(namecheck))){
+                nameerror.innerText = "Please enter a valid name , the name should contain only alphabets"
                 isvalid = false
             }
             if(email.value === ""){

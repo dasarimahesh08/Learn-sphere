@@ -46,12 +46,16 @@
 </head>
 <body>
     <div class="parentdiv">
+        <a href="{% url 'homepage' %}" class="text-white fs-1 ms-4 mt-3">
+            <i class="bi bi-arrow-left-circle"></i>
+        </a>
         <div class="d-flex justify-content-center  ">
             <div class="d-block card w-50 text-center mt-3 detailsdiv">
                 <h2>Course Name : {{ course.cname }}</h2>
                 <h2>Available Trainers : 
                     {% for tnr in qslto %}
                         {{ tnr.tname }},
+                       
                     {% endfor %}
                 </h2>
                 <h2>Durtions : {{ course.duration }}</h2>

@@ -1,4 +1,4 @@
-let name = document.getElementById("sfn");
+let sname = document.getElementById("sfn");
 let email = document.getElementById("se");
 let mobile = document.getElementById("smbn");
 let dob = document.getElementById("dob");
@@ -144,6 +144,8 @@ password.onkeyup = function(){
 
 registerbtn.addEventListener("submit" , function(e){
     let pattern = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*]).{8,}$/
+    let namecheck = /^[A-Za-z\s]+$/
+    let addcheck = /^[A-Za-z0-9\s,.\-\/#]+$/
     let isvalid = true
 
     nameError.innerText = ""
@@ -159,9 +161,14 @@ registerbtn.addEventListener("submit" , function(e){
     courseError.innerText = ""
     trainerError.innerText = ""
     let emailval = email.value.trim()
-    
-    if (name.value === ""){
+    console.log(sname)
+    console.log(nameError)
+    console.log(sname.value)
+    if (sname.value === ""){
         nameError.innerText = "Please enter your name"
+        isvalid = false
+    } else if(!(sname.value.match(namecheck))){
+        nameError.innerText = "Please enter a valid name , the name should contain only alphabets"
         isvalid = false
     }
     if(emailval === ""){
@@ -173,7 +180,7 @@ registerbtn.addEventListener("submit" , function(e){
     }   
     let digitcheck = /[0-9]/
     if (mobile.value === ""){
-       numError.innerText = "please enter  your mobile number"
+       numError.innerText = "please enter your mobile number"
        isvalid = false
     } else if(!(mobile.value.match(digitcheck) && mobile.value.length == 10)){
         numError.innerText = "Please enter a valid phone number"
@@ -196,6 +203,9 @@ registerbtn.addEventListener("submit" , function(e){
     }
     if (address.value === ""){
         addressError.innerHTML = "Please enter you address"
+        isvalid = false
+    } else if(!addcheck.test(address.value.trim())){
+        addressError.innerText = "Please enter the valid address"
         isvalid = false
     }
     if (username.value === ""){
@@ -227,8 +237,7 @@ registerbtn.addEventListener("submit" , function(e){
     } else{
         e.preventDefault()
     }
-
-    
+ 
 });
 
 // profile popup for cropping the image

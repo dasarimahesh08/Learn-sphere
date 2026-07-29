@@ -19,7 +19,7 @@
         }
         .section{
             padding: 40px;
-            border-bottom: 2px solid #4db8ff;
+            border-bottom: 1px solid #4db8ff;
             box-shadow: 0 1px 0 #4db8ff ;
         }
         .img1{
@@ -38,7 +38,7 @@
             width: 98%;
             height: 450px;
         }
-         #enroll-popup{
+        #enroll-popup{
         background-color: aliceblue;
         box-shadow: 0px 0px 4px grey;
         width: 35%;
@@ -47,12 +47,16 @@
         left: 30%;
 
       }
-     
+      
     </style>
 </head>
 <body>
-    <h1 class="text-center text-white headtxt section">Data Analytics</h1>
-    
+    <div class="d-flex section">
+        <a href="{% url 'homepage' %}" class="text-white fs-1">
+            <i class="bi bi-arrow-left-circle"></i>
+        </a>
+        <h1 class="text-center text-white headtxt w-100">Data Analytics</h1>
+    </div>
     <div class="section d-flex">
         <div class="text-white ms-2 w-50">
             <h1 class="">Overview of Data Analytics</h1>
@@ -64,7 +68,7 @@
             <h3 class="">Course Name : {{ course.cname }}</h3>
             <h3>Available Trainers : 
                 {% for tr in qslto %}
-                {{ tr.tname }}
+                    {{ tr.tname }} ,
                 {% endfor %}
             </h3>
             <h3>Duration :{{ course.duration }}</h3>

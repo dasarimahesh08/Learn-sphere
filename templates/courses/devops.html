@@ -36,12 +36,15 @@
 </head>
 <body>
     <div class="section d-flex">
-        <div class="w-50 mt-3 ms-4">
-           <h1 class="mt-2">Course Details </h1>
+        <div class="w-50 ms-4">
+            <a href="{% url 'homepage' %}" class="text-dark fs-1 navtohome">
+                <i class="bi bi-arrow-left-circle"></i>
+            </a>
+            <h1 class="mt-3">Course Details </h1>
             <h3 class="">Course Name : {{ course.cname }}</h3>
             <h3>Available Trainers : 
                 {% for tr in qslto %}
-                {{ tr.tname }}
+                    {{ tr.tname }} ,
                 {% endfor %}
             </h3>
             <h3>Duration : {{ course.duration }}</h3>
