@@ -107,9 +107,6 @@
             crsError.innerText = "";
             titleError.innerText = "";
 
-            uploadpopup.style.display = "block";
-            uploadBtn.disabled = true;
-
             let isvalid = true;
             if (course.value === ""){
                 crsError.innerText = "Please select the course";
@@ -120,15 +117,19 @@
                 isvalid = false;
             }
             if (video.value === "" && pdf.value === ""){
-                filesError.innerText = "Please enter atlease pdf or video"
+                filesError.innerText = "Please enter atlease pdf or video";
                 isvalid = false;
             } else if (pdf.value !== "" && !pdf.value.endsWith('.pdf')){
-                filesError.innerText = "Please upload .pdf files only"
-                isvalid = false
+                filesError.innerText = "Please upload .pdf files only";
+                isvalid = false;
             }
             if (!isvalid){
-                e.preventDefault()
+                e.preventDefault();
+                return;
             }
+
+            uploadpopup.style.display = "block";
+            uploadBtn.disabled = true;
         });
     </script>
 </body>
