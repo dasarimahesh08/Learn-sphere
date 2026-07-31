@@ -7,6 +7,7 @@ from django.views.decorators.cache import cache_control , never_cache
 from django.contrib.auth.decorators import login_required
 import random 
 import json
+import socket
 from django.core.mail import send_mail
 from django.contrib.auth.hashers import make_password , check_password
 from django.contrib import messages
@@ -774,21 +775,27 @@ def view_video(request , id):
     d = {'cvo':cvo}
     return render(request , 'view_video.html' , d)
 
+def delete_video(request):
+    data = json.loads(request.body)
+    vid_id = data['content_id']
 
-import socket
-from django.http import HttpResponse
-
-def socket_test(request):
     try:
-        socket.setdefaulttimeout(10)
+        co = CourseContent.objects.get(id=vid_id)
+    except CourseContent.DoesNotExist:
+        return JsonResponse({"status": "error", "message": "Content not found"}, status=404)
 
-        s = socket.create_connection(
-            ("smtp-relay.brevo.com",587)
-        )
+    # delete video from Drive
+    if co.video:
+        deleted = delete_file_from_drive(co.video)
+        if not deleted:
+            return JsonResponse({"status": "error", "message": "Failed to delete video from Drive"}, status=500)
 
-        s.close()
+    # delete pdf from Drive too, if present
+    if co.pdf:
+        deleted_pdf = delete_file_from_drive(co.pdf)
+        if not deleted_pdf:
+            return JsonResponse({"status": "error", "message": "Failed to delete PDF from Drive"}, status=500)
 
-        return HttpResponse("CONNECTED")
+    co.delete()
 
-    except Exception as e:
-        return HttpResponse(str(e))
+    return JsonResponse({"status": "success"})

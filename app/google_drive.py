@@ -5,7 +5,7 @@ from google.auth.transport.requests import Request
 from googleapiclient.http import MediaFileUpload
 import tempfile
 import os
-
+import re
 SCOPES = ['https://www.googleapis.com/auth/drive.file']
 
 
@@ -79,3 +79,27 @@ def upload_file_to_drive(uploaded_file):
 
 def get_drive_file_url(file_id):
     return f"https://drive.google.com/file/d/{file_id}/preview?usp=sharing"
+
+def extract_file_id(drive_url):
+    """
+    Extracts the Google Drive file ID from a URL like:
+    https://drive.google.com/file/d/1AbCdEfGhIjKlMnOp/preview?usp=sharing
+    """
+    match = re.search(r'/d/([a-zA-Z0-9_-]+)', drive_url)
+    if match:
+        return match.group(1)
+    return None
+
+def delete_file_from_drive(drive_url):
+    file_id = extract_file_id(drive_url)
+    if not file_id:
+        print("Could not extract file ID from:", drive_url)
+        return False
+
+    service = authenticate_google_drive()
+    try:
+        service.files().delete(fileId=file_id).execute()
+        return True
+    except Exception as e:
+        print("Drive delete error:", e)
+        return False
