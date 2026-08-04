@@ -90,7 +90,7 @@ def extract_file_id(drive_url):
         return match.group(1)
     return None
 
-def delete_file_from_drive(drive_url):
+def delete_file_from_drive(file_id):
 
     service = authenticate_google_drive()
     try:
