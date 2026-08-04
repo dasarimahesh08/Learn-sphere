@@ -22,6 +22,7 @@ from app.google_drive import upload_file_to_drive , get_drive_file_url
 import traceback
 import requests
 import os
+from app.google_drive import delete_file_from_drive
 # Create your views here.
 
 def send_brevo_email(subject, html_content, to_email, to_name=""):
@@ -778,6 +779,7 @@ def view_video(request , id):
 def delete_video(request):
     data = json.loads(request.body)
     vid_id = data['content_id']
+
 
     try:
         co = CourseContent.objects.get(id=vid_id)
