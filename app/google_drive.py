@@ -91,10 +91,6 @@ def extract_file_id(drive_url):
     return None
 
 def delete_file_from_drive(drive_url):
-    file_id = extract_file_id(drive_url)
-    if not file_id:
-        print("Could not extract file ID from:", drive_url)
-        return False
 
     service = authenticate_google_drive()
     try:
