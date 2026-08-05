@@ -49,8 +49,7 @@ def upload_file_to_drive(uploaded_file):
         media = MediaFileUpload(
         temp.name,
         mimetype=uploaded_file.content_type,
-        resumable=True ,
-        chunksize=1024 * 1024   # 1MB per chunk, instead of the default (much larger)
+        resumable=True 
         )
         request = service.files().create(
             body=file_metadata,
