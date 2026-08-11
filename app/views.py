@@ -769,7 +769,7 @@ def search_content(request):
     cco = CourseContent.objects.filter(title = search_text)
     content = []
     for co in cco:
-        content.append({ 'id':co.id , 'title':co.title , 'course': co.course , 'upload_date':co.upload_date })
+        content.append({ 'id':co.id , 'title':co.title , 'course': co.course.cname , 'upload_date':co.upload_date })
     return JsonResponse({'content':content})
 
 def view_video(request , id):
