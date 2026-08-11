@@ -94,7 +94,7 @@
                     <form action="{% url 'search_content' %}" method="GET" class="ms-5 w-50">
                         <div class="input-group search-box ">
                             <input type="text" name="search" placeholder="Search..." id="search" class="form-control w-25">
-                            <button class="input-group-text" id="search-submit">
+                            <button type="button" class="input-group-text" id="search-submit">
                                 <i class="bi bi-search"></i>
                             </button> 
                         </div>
@@ -286,7 +286,7 @@
         });
 
         // search bar code 
-    let search = document.getElementById('search');
+    let search = document.getElementById('search').value;
     let searchPopup = document.getElementById('search-parent');
     let searchSubmit = document.getElementById('search-submit');
     let cancelPopup = document.getElementById('search-cancel');
@@ -297,8 +297,9 @@
 
     searchSubmit.addEventListener("click" , function(){
 
-        searchPopup.style.display = "block"
-            fetch("/search_content/")
+    searchPopup.style.display = "block"
+
+    fetch(`/search_content/?search=${encodeURIComponent(search)}`)
     .then(response => response.json())
     .then(data => {
         let content = data.content;
