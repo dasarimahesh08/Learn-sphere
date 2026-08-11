@@ -20,7 +20,7 @@
         .search-box{
             height: 30px;
             margin-left: 30%;
-            width: 35%;
+            width: 70%;
         }
         .mt-6{
             margin-top: 60px;
@@ -72,8 +72,9 @@
             background-color: rgb(238, 243, 248);
         }
         #search-cancel{
-            margin-left:49%;
-            height: 10%;
+            position: absolute;
+            left: 95%;
+            height: 8%;
         }
     </style>
 </head>
@@ -90,9 +91,9 @@
             </div>
             <div class="w-50 mt-6">
                 <div class="d-flex">
-                    <form action="{% url 'search_content' %}" method="GET"></form>
-                        <div class="input-group search-box">
-                            <input type="text" name="search" placeholder="Search..." id="search" class="form-control ps-3">
+                    <form action="{% url 'search_content' %}" method="GET" class="ms-5 w-50">
+                        <div class="input-group search-box ">
+                            <input type="text" name="search" placeholder="Search..." id="search" class="form-control w-25">
                             <button class="input-group-text" id="search-submit">
                                 <i class="bi bi-search"></i>
                             </button> 
@@ -216,10 +217,10 @@
 
 <!-- searched content block start here -->
     <div class="w-50" id="search-parent">
-        <div class="d-flex">
+        <div class="d-flex flex-div">
             <i class="bi bi-search mt-4 ms-4 ps-3 pe-3 pt-2 pb-2 fs-3 rounded-5"></i>
             <div class="mt-4 ms-4" id="course-name">
-        
+                
             </div>
             <a href="" class="text-dark border mt-2 ps-1 pe-1" id="search-cancel"> <i class="bi bi-x-lg fs-4"></i> </a>
         </div>
@@ -293,32 +294,36 @@
     let courseName = document.getElementById('course-name');
 
     searchPopup.style.display = "none"
-    searchSubmit.addEventListener("click" , function(){
-        searchPopup.style.display = "block"
-        cancelPopup.addEventListener("click" , function(){
-            searchPopup.style.display = "none"
-        });
-    });
 
-    fetch("/search_content/")
+    searchSubmit.addEventListener("click" , function(){
+
+        searchPopup.style.display = "block"
+            fetch("/search_content/")
     .then(response => response.json())
     .then(data => {
         let content = data.content;
         content.forEach(function(co , index) {
-            if (co.title == search.value){
-                courseName.innerHTML = `<h4 class="mt-2">Search results for ${co.course}</h4>`
+            console.log(co)
+            if (content.length > 0){
+                courseName.innerHTML = `<h4 class="mt-2">Search results </h4>`
 
                tablebody.innerHTML += `
                 <td>${index+1}</td>
                 <td>${co.title}</td>
                 <td>${co.course}</td>
-                <td>${co.uploade_date}</td>`
+                <td>${co.upload_date}</td>`
             } else{
-                courseName.innerHTML = `<h4 class="mt-2">No Search results for ${co.course}</h4>`
+                courseName.innerHTML = `<h4 class="mt-2">No Search results found</h4>`
                 tablebody.innerHTML = ""
             }
         });
     });
+        cancelPopup.addEventListener("click" , function(){
+            searchPopup.style.display = "none"
+        });
+    });
+
+
 
     </script>
 </body>

@@ -764,8 +764,13 @@ def display_course_content(request):
     return render(request , 'display_course_content.html' , d)
 
 def search_content(request):
-    qscco = CourseContent.objects.all() 
-    return JsonResponse({'content':qscco})
+    search_text = request.GET.get('search').strip()
+    print(search_text)
+    cco = CourseContent.objects.filter(title = search_text)
+    content = []
+    for co in cco:
+        content.append(co)
+    return JsonResponse({'content':content})
 
 def view_video(request , id):
     tid = request.session.get('tid')
