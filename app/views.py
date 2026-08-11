@@ -764,9 +764,11 @@ def display_course_content(request):
     return render(request , 'display_course_content.html' , d)
 
 def search_content(request):
+    tid = request.session.get('tid')
+
     search_text = request.GET.get('search').strip()
     print(search_text)
-    cco = CourseContent.objects.filter(title__icontains = search_text)
+    cco = CourseContent.objects.filter(title__icontains = search_text , uploaded_by = tid)
     content = []
     for co in cco:
         content.append({ 'id':co.id , 'title':co.title , 'course': co.course.cname , 'upload_date':co.upload_date })
