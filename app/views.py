@@ -763,6 +763,10 @@ def display_course_content(request):
     d = {'cco':cco , 'pdfcount':pdfcount , 'lcvo':lcvo , 'videocount':videocount }
     return render(request , 'display_course_content.html' , d)
 
+def search_content(request):
+    qscco = CourseContent.objects.all() 
+    return JsonResponse({'content':qscco})
+
 def view_video(request , id):
     tid = request.session.get('tid')
     if tid:

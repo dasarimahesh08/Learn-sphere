@@ -61,6 +61,7 @@ urlpatterns = [
     path('trainer_logout/' , trainer_logout , name = 'trainer_logout'),
     path('add_course_content/' , add_course_content , name = 'add_course_content'),
     path('display_course_content/' , display_course_content , name = 'display_course_content'),
+    path('search_content/' , search_content , name = 'search_content'),
     path('view_video/<id>/' , view_video , name = 'view_video'),
     path('delete_video/' , delete_video , name = 'delete_video'),
     

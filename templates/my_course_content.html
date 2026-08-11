@@ -68,19 +68,23 @@
             width: 30%;
         }
         #empty-pdf{
-            margin-left: 200px;
+            margin-left: 250px;
             background-color: rgb(235, 233, 233);
             margin-right: 240px;
         }
         .bi-filetype-pdf{
             font-size: 70px;
-            margin-left: 150px;
+            margin-left: 180px;
         }
         .pdf-text{
             font-size: 40px;
+            margin-left: 75px;
         }
         .ms-7{
-            margin-left: 70px;
+            margin-left: 80px;
+        }
+        .ms-10{
+            margin-left: 13px;
         }
         #pdfviewer{
             width: 100%;
@@ -238,9 +242,9 @@
                     <div class="p-3  h-100">
                         <div id="empty-pdf" class="pb-5 mt-5 rounded-4">
                             <i class="bi bi-filetype-pdf"></i>
-                            <h1 class="pdf-text ms-5 mt-3 ">Click a PDF to see</h1>
-                            <p class="fs-5 ms-5">Select any PDF from the list to View</p>
-                            <a href="{% url 'my_courses' %}" class="text-decoration-none btn btn-primary fs-5 ms-7">
+                            <h1 class="pdf-text mt-3 ">Click a PDF to see</h1>
+                            <p class="fs-5 ms-7">Select any PDF from the list to View</p>
+                            <a href="{% url 'my_courses' %}" class="text-decoration-none btn btn-primary fs-5 ms-10">
                                 <i class="bi bi-arrow-left me-2"></i>Back to courses list
                             </a>
                         </div>
