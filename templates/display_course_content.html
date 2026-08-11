@@ -286,7 +286,7 @@
         });
 
         // search bar code 
-    let search = document.getElementById('search').value;
+    let search = document.getElementById('search');
     let searchPopup = document.getElementById('search-parent');
     let searchSubmit = document.getElementById('search-submit');
     let cancelPopup = document.getElementById('search-cancel');
@@ -299,7 +299,8 @@
 
     searchPopup.style.display = "block"
 
-    fetch(`/search_content/?search=${encodeURIComponent(search)}`)
+    let searched_text = search.value.trim()
+    fetch(`/search_content/?search=${encodeURIComponent(searched_text)}`)
     .then(response => response.json())
     .then(data => {
         let content = data.content;

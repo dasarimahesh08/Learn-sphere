@@ -766,7 +766,7 @@ def display_course_content(request):
 def search_content(request):
     search_text = request.GET.get('search').strip()
     print(search_text)
-    cco = CourseContent.objects.filter(title = search_text)
+    cco = CourseContent.objects.filter(title__icontains = search_text)
     content = []
     for co in cco:
         content.append({ 'id':co.id , 'title':co.title , 'course': co.course.cname , 'upload_date':co.upload_date })
